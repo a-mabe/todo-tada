@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todotada/main.dart';
 
-import 'settings.dart';
+Color mainColor = Colors.purple;
 
-Color mainColor = Colors.red;
-
-void main() {
-  runApp(Root());
-}
-
-class Root extends StatelessWidget {
+class SettingsRoute extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Todo Tada',
+      title: 'Settings',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,13 +26,13 @@ class Root extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MainPage(title: 'All Lists'),
+      home: SettingsPage(title: 'Settings'),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  MainPage({Key key, this.title}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  SettingsPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -51,10 +46,10 @@ class MainPage extends StatefulWidget {
   final String title;
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _SettingsPageState extends State<SettingsPage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -89,19 +84,19 @@ class _MainPageState extends State<MainPage> {
               child: Text('Menu'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('All Lists'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Root()),
+                  );
               },
             ),
             ListTile(
               title: const Text('Settings'),
               onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingsRoute()),
-                  );
+                // Update the state of the app.
+                // ...
               },
             ),
           ],
