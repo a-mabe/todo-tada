@@ -1,16 +1,22 @@
-# todotada
+# To-do Tada
 
-A new Flutter project.
+A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
 
-## Getting Started
+## Author
 
-This project is a starting point for a Flutter application.
+* Abigail Mabe [mabe.abby.a@gmail.com](mailto:mabe.abby.a@gmail.com)
 
-A few resources to get you started if this is your first Flutter project:
+### My Other Apps
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+* With the help of [Dhruv Patel](https://github.com/dhruv282) I created [Weatheristic](https://weatheristic.app/), a weather condition posting app.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## License
+
+See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) at the root of the project.
+
+# Overview
+
+This app is a drag and drop visual to-do list. Each icon is supposed to represent a to-do list item, and dragging an icon from "To-do" to "Done" is a very rewarding action. Implementing a list in this manner makes it easy to visual see how many items need completed, how many have been completed, and exactly what each to-do item entails.
+
+## Status
+
