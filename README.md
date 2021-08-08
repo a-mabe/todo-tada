@@ -20,3 +20,17 @@ This app is a drag and drop visual to-do list. Each icon is supposed to represen
 
 ## Status
 
+The workflow for this app utilizes [GitHub Projects](https://github.com/a-mabe/todo-tada/projects).
+
+* [Generic To-do Lists](https://github.com/a-mabe/todo-tada/projects/2) covers the basic functionality of the to-do list app.
+* [Daily Lists Screen](https://github.com/a-mabe/todo-tada/projects/1) expands on the general to-do list functionaly by allowing lists to be created for and sorted by specific dates.
+
+## Sitemap
+
+Initial planned sitemap.
+
+![Sitemap](https://github.com/a-mabe/todo-tada/blob/master/docs/images/sitemap.png?raw=true)
+
+### Screens
+
+1. 
