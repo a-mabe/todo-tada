@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 import 'settings.dart';
 
 Color mainColor = Colors.red;
 
 void main() {
-  runApp(Root());
+  initSettings().then((_) {
+    runApp(Root());
+  });
+}
+
+Future<void> initSettings() async {
+  await Settings.init();
 }
 
 class Root extends StatelessWidget {
