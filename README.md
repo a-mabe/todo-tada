@@ -18,7 +18,7 @@ See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) 
 
 # Overview
 
-This app is a drag and drop visual to-do list. Each icon is supposed to represent a to-do list item, and dragging an icon from "To-do" to "Done" is a very rewarding action. Implementing a list in this manner makes it easy to visual see how many items need completed, how many have been completed, and exactly what each to-do item entails.
+This app is a drag and drop visual to-do list. Each icon is supposed to represent a to-do list item. Instead of checking a box, you drag the completed icon from the "To-do" side to the "Tada" side. Implementing a list in this manner makes it easy to visually see how many items need completed and how many have been completed.
 
 ## Status
 
