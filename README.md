@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 # To-do Tada
 
 A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
@@ -33,4 +35,18 @@ Initial planned sitemap.
 
 ### Screens
 
-1. 
+#### 1. All Lists
+
+#### 2. Daily Lists
+
+#### 3. Other Lists
+
+## Packages and Plugins
+
+Flutter allows the [use of packages](https://flutter.dev/docs/development/packages-and-plugins/using-packages) contributed by other developers. This app utilizes a variety of plugins.
+
+* [flutter_native_splash](https://pub.dev/packages/flutter_native_splash)
+  * Generates native code for the splash screen.
+
+* [flutter_settings_screens](https://pub.dev/packages/flutter_settings_screens)
+  * Used to implement the settings screen. Utilizes shared preferences to store user settings.
