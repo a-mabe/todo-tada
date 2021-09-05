@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
+import 'hexcolor.dart';
 import 'settings.dart';
+import 'themenotifier.dart';
 
 ///
 /// ---------
 /// VARIABLES
 /// ---------
 ///
-final defaultTheme = ThemeData(
-  primarySwatch: Colors.grey,
-  primaryColor: Colors.black,
-  brightness: Brightness.dark,
-  backgroundColor: const Color(0xFF212121),
-  accentColor: Colors.white,
-  accentIconTheme: IconThemeData(color: Colors.black),
-  dividerColor: Colors.black12,
-);
+/* var lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primarySwatch: Colors.pink,
+    accentColor: Colors.pink[500],
+    toggleableActiveColor: Colors.pink[500],
+  );
 
-final customTheme = ThemeData(
-  primarySwatch: Colors.grey,
-  primaryColor: Colors.white,
-  brightness: Brightness.light,
-  backgroundColor: const Color(0xFFE5E5E5),
-  accentColor: Colors.black,
-  accentIconTheme: IconThemeData(color: Colors.white),
-  dividerColor: Colors.white54,
-);
+var darkTheme = ThemeData(
+    primarySwatch: Colors.orange,
+    primaryColor: Colors.orange,
+    brightness: Brightness.dark,
+    backgroundColor: const Color(0xFF212121),
+    accentColor: Colors.orange,
+    accentIconTheme: IconThemeData(color: Colors.orange),
+    dividerColor: Colors.orange,
+  ); */
 ///
 /// -------------
 /// END VARIABLES
@@ -45,9 +44,28 @@ final customTheme = ThemeData(
 ///
 void main() {
   initSettings().then((_) {
+    
+    final Color color;
+    final String colorString = Settings.getValue<String>('key-color-picker', "");
+    if (colorString != "") {
+      color = HexColor.fromHex(colorString);
+    } else {
+      color = Colors.red;
+    }
+    debugPrint(color.toString());
+
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
-        create: (_) => ThemeNotifier(defaultTheme),
+        create: (_) => ThemeNotifier(ThemeData(
+            primaryColor: color,
+            brightness: Brightness.light,
+            backgroundColor: color,
+            accentColor: color,
+            accentIconTheme: IconThemeData(color: color),
+            dividerColor: color,
+            toggleableActiveColor: color,
+          )
+        ),
         child: Root(),
       ),
     );
@@ -64,36 +82,6 @@ Future<void> initSettings() async {
 
 
 /// 
-/// ------------
-/// THEME CHANGE
-/// ------------
-/// 
-void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-  (value)
-      ? themeNotifier.setTheme(defaultTheme)
-      : themeNotifier.setTheme(customTheme);
-}
-
-class ThemeNotifier with ChangeNotifier {
-  ThemeData _themeData;
-
-  ThemeNotifier(this._themeData);
-
-  getTheme() => _themeData;
-
-  setTheme(ThemeData themeData) async {
-    _themeData = themeData;
-    notifyListeners();
-  }
-}
-/// 
-/// ----------------
-/// END THEME CHANGE
-/// ----------------
-/// 
-
-
-/// 
 /// ---------------
 /// ROOT OF THE APP
 /// ---------------
@@ -105,7 +93,6 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-
     return MaterialApp(
       title: 'Todo Tada',
       theme: themeNotifier.getTheme(),
@@ -182,8 +169,7 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                 // Update the state of the app.
                 // ...
-                //widget.themeChanger.setTheme(ThemeData(brightness: Brightness.light, primarySwatch: Colors.red));
-                onThemeChanged(false, themeNotifier);
+                // onThemeChanged(false, themeNotifier, );
               },
             ),
             ListTile(
@@ -191,7 +177,8 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingsRoute()),
+                    MaterialPageRoute(builder: (context) => SettingsRoute(themeNotifier: themeNotifier)),
+                    //MaterialPageRoute(builder: (context) => SettingsRoute()),
                   );
               },
             ),

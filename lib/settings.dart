@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'themenotifier.dart';
 
 class SettingsRoute extends StatefulWidget {
+
+  // In the constructor, require a Todo.
+  const SettingsRoute({Key? key, required this.themeNotifier}) : super(key: key);
+
+  // Declare a field that holds the Todo.
+  final ThemeNotifier themeNotifier;
+
   @override
-  _SettingsRouteState createState() => _SettingsRouteState();
+  _SettingsRouteState createState() => _SettingsRouteState(themeNotifier: themeNotifier);
 }
 
 class _SettingsRouteState extends State<SettingsRoute> {
+
+  // In the constructor, require a Todo.
+  _SettingsRouteState({required this.themeNotifier});
+
+  // Declare a field that holds the Todo.
+  final ThemeNotifier themeNotifier;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,48 +37,21 @@ class _SettingsRouteState extends State<SettingsRoute> {
                 defaultValue: Colors.blue,
                 onChange: (value) {
                   debugPrint('key-color-picker: $value');
+
+                  onThemeChanged(false, this.themeNotifier, ThemeData(
+                      primaryColor: value,
+                      brightness: Brightness.light,
+                      backgroundColor: value,
+                      accentColor: value,
+                      accentIconTheme: IconThemeData(color: value),
+                      dividerColor: value,
+                      toggleableActiveColor: value,
+                    )
+                  );
                 },
               )
             ],
           ),
-          ModalSettingsTile(
-            title: 'Other settings',
-            subtitle: 'Other Settings in a Dialog',
-            children: <Widget>[
-              SliderSettingsTile(
-                title: 'Custom Ratio',
-                settingKey: 'key-custom-ratio-slider-2',
-                defaultValue: 2.5,
-                min: 1,
-                max: 5,
-                step: 0.1,
-                leading: Icon(Icons.aspect_ratio),
-                onChange: (value) {
-                  debugPrint('\n===== on change =====\n'
-                      'key-custom-ratio-slider-2: $value'
-                      '\n==========\n');
-                },
-                onChangeStart: (value) {
-                  debugPrint('\n===== on change start =====\n'
-                      'key-custom-ratio-slider-2: $value'
-                      '\n==========\n');
-                },
-                onChangeEnd: (value) {
-                  debugPrint('\n===== on change end =====\n'
-                      'key-custom-ratio-slider-2: $value'
-                      '\n==========\n');
-                },
-              ),
-              ColorPickerSettingsTile(
-                settingKey: 'key-color-picker-2',
-                title: 'Accent Picker',
-                defaultValue: Colors.blue,
-                onChange: (value) {
-                  debugPrint('key-color-picker-2: $value');
-                },
-              )
-            ],
-          )
         ],
       ),
     );
