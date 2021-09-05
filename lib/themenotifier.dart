@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// 
+/// Based off of the method from the following article:
+/// https://betterprogramming.pub/how-to-create-a-dynamic-theme-in-flutter-using-provider-e6ad1f023899.
+/// 
+
+/// 
 /// ------------
-/// THEME CHANGE
+/// THEME NOTIFIER
 /// ------------
 /// 
 void onThemeChanged(bool value, ThemeNotifier themeNotifier, ThemeData newTheme) async {
@@ -23,6 +28,6 @@ class ThemeNotifier with ChangeNotifier {
 }
 /// 
 /// ----------------
-/// END THEME CHANGE
+/// END THEME NOTIFIER
 /// ----------------
 /// 

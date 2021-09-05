@@ -44,7 +44,6 @@ var darkTheme = ThemeData(
 ///
 void main() {
   initSettings().then((_) {
-    
     final Color color;
     final String colorString = Settings.getValue<String>('key-color-picker', "");
     if (colorString != "") {
@@ -152,6 +151,7 @@ class _MainPageState extends State<MainPage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -159,13 +159,15 @@ class _MainPageState extends State<MainPage> {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+              child: Text(
+                'To-do, Tada', 
+                style: TextStyle(fontSize: 18),
+
               ),
-              child: Text('Menu'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              leading: new Icon(Icons.list_alt),
+              title: const Text('All Lists'),
               onTap: () {
                 // Update the state of the app.
                 // ...
@@ -173,6 +175,21 @@ class _MainPageState extends State<MainPage> {
               },
             ),
             ListTile(
+              leading: new Icon(Icons.today),
+              title: const Text('Daily Lists'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              leading: new Icon(Icons.checklist),
+              title: const Text('Check Lists'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              leading: new Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
                   Navigator.push(
