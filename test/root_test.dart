@@ -101,4 +101,19 @@ void main() {
       expect(find.byIcon(Icons.menu), findsOneWidget);
     });
   });
+
+  group('Menu Widget Test', () {
+    testWidgets('Testing Menu Drawer', (tester) async {
+      // await tester.pumpWidget(createRoot());
+
+      // // Find the title
+      // expect(find.text('All Lists'), findsOneWidget);
+
+      // // Find the Add List floating action button
+      // expect(find.widgetWithIcon(FloatingActionButton, Icons.add), findsOneWidget);
+
+      // // Find the menu button
+      // expect(find.byIcon(Icons.menu), findsOneWidget);
+    });
+  });
 }
