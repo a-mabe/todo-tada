@@ -10,7 +10,7 @@ A fully open source visual to-do list [Flutter](https://flutter.dev/) applicatio
 
 ### My Other Apps
 
-* With the help of [Dhruv Patel](https://github.com/dhruv282) I created [Weatheristic](https://weatheristic.app/), a weather condition posting app.
+  * I created [Weatheristic](https://weatheristic.app/), a weather condition posting app, as a summer project with the help of [Dhruv Patel](https://github.com/dhruv282).
 
 ## License
 
@@ -31,7 +31,7 @@ The workflow for this app utilizes [GitHub Projects](https://github.com/a-mabe/t
 
 Initial planned sitemap.
 
-![Sitemap](https://github.com/a-mabe/todo-tada/blob/master/docs/images/sitemap.png?raw=true)
+![Sitemap](https://github.com/a-mabe/todo-tada/blob/master/docs/images/sitemap_uml.png?raw=true)
 
 ### Screens
 

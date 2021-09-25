@@ -1,0 +1,48 @@
+@startuml
+
+[*] --> All_Lists
+All_Lists --> Add_List
+Other_Lists --> Add_List
+Daily_Lists --> Add_List
+
+Add_List --> View_List
+
+All_Lists --> View_List
+Other_Lists --> View_List
+Daily_Lists --> View_List
+
+All_Lists : Displays all lists
+All_Lists : regardless of category.
+
+Other_Lists : Displays lists with no
+Other_Lists : completion date.
+
+Daily_Lists : Displays lists with a
+Daily_Lists : completion date.
+
+Add_List : Configure settings for
+Add_List : a new list.
+
+Add_List_Item : Choose an item to add.
+
+Edit_Item : Configure the item and add.
+
+Edit_List : Change the list settings.
+
+View_List : View the selected list.
+
+All_Lists -> Other_Lists
+Other_Lists -> All_Lists
+
+All_Lists -> Daily_Lists
+Daily_Lists -> All_Lists
+
+Other_Lists -> Daily_Lists
+Daily_Lists -> Other_Lists
+
+View_List -> Add_List_Item
+Add_List_Item -> Edit_Item
+
+View_List -> Edit_List
+
+@enduml
