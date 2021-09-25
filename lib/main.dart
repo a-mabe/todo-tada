@@ -10,22 +10,10 @@ import 'themenotifier.dart';
 /// VARIABLES
 /// ---------
 ///
-/* var lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.pink,
-    accentColor: Colors.pink[500],
-    toggleableActiveColor: Colors.pink[500],
-  );
 
-var darkTheme = ThemeData(
-    primarySwatch: Colors.orange,
-    primaryColor: Colors.orange,
-    brightness: Brightness.dark,
-    backgroundColor: const Color(0xFF212121),
-    accentColor: Colors.orange,
-    accentIconTheme: IconThemeData(color: Colors.orange),
-    dividerColor: Colors.orange,
-  ); */
+late final Color primaryColor;
+late final Color textColor;
+
 ///
 /// -------------
 /// END VARIABLES
@@ -44,25 +32,71 @@ var darkTheme = ThemeData(
 ///
 void main() {
   initSettings().then((_) {
-    final Color color;
-    final String colorString = Settings.getValue<String>('key-color-picker', "");
-    if (colorString != "") {
-      color = HexColor.fromHex(colorString);
+    final String primaryColorString = Settings.getValue<String>('primary-color-picker', "");
+    if (primaryColorString != "") {
+      primaryColor = HexColor.fromHex(primaryColorString);
     } else {
-      color = Colors.red;
+      primaryColor = Colors.blue; // Default
     }
-    debugPrint(color.toString());
+
+    final String textColorString = Settings.getValue<String>('text-color-picker', "");
+    if (textColorString != "") {
+      textColor = HexColor.fromHex(textColorString);
+    } else {
+      textColor = Colors.black; // Default
+    }
 
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
-            primaryColor: color,
+            primaryColor: primaryColor,
             brightness: Brightness.light,
-            backgroundColor: color,
-            accentColor: color,
-            accentIconTheme: IconThemeData(color: color),
-            dividerColor: color,
-            toggleableActiveColor: color,
+            backgroundColor: primaryColor,
+            accentColor: primaryColor,
+            accentIconTheme: IconThemeData(color: primaryColor),
+            iconTheme: IconThemeData(
+              color: Colors.pink
+            ),
+            dividerColor: primaryColor,
+            toggleableActiveColor: primaryColor,
+            appBarTheme: AppBarTheme(
+              backgroundColor: primaryColor,
+              backwardsCompatibility: false,
+              iconTheme: IconThemeData(color: textColor), // This should be the same as titleTextStyle
+              titleTextStyle: TextStyle(color: textColor), // This should be the same as iconTheme
+            ),
+            textTheme: TextTheme(
+              headline1: TextStyle(
+                color: textColor,
+              ),
+              headline2: TextStyle(
+                color: textColor,
+              ),
+              headline3: TextStyle(
+                color: textColor,
+              ),
+              headline4: TextStyle(
+                color: textColor,
+              ),
+              headline5: TextStyle(
+                color: textColor,
+              ),
+              headline6: TextStyle(
+                color: textColor,
+              ),
+              subtitle1: TextStyle(
+                color: textColor,
+              ),
+              subtitle2: TextStyle(
+                color: textColor,
+              ),
+              bodyText1: TextStyle(
+                color: textColor,
+              ),
+              bodyText2: TextStyle(
+                color: textColor,
+              ),
+            ),
           )
         ),
         child: Root(),
@@ -194,8 +228,9 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingsRoute(themeNotifier: themeNotifier)),
-                    //MaterialPageRoute(builder: (context) => SettingsRoute()),
+                    MaterialPageRoute(builder: (context) => SettingsRoute(
+                      themeNotifier: themeNotifier, 
+                    )),
                   );
               },
             ),
@@ -233,7 +268,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1?.color),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
