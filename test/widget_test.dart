@@ -8,23 +8,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:provider/provider.dart';
+import 'package:todotada/hexcolor.dart';
+import 'package:todotada/settings.dart';
+import 'package:todotada/themenotifier.dart';
 import 'package:todotada/main.dart';
 
+///
+/// ---------
+/// VARIABLES
+/// ---------
+///
+
+final Color primaryColor = Colors.blue;
+final Color textColor = Colors.black;
+
+///
+/// -------------
+/// END VARIABLES
+/// -------------
+///
+
+Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(ThemeData(
+            primaryColor: primaryColor,
+            brightness: Brightness.light,
+            backgroundColor: primaryColor,
+            accentColor: primaryColor,
+            accentIconTheme: IconThemeData(color: primaryColor),
+            iconTheme: IconThemeData(
+              color: Colors.pink
+            ),
+            dividerColor: primaryColor,
+            toggleableActiveColor: primaryColor,
+            appBarTheme: AppBarTheme(
+              backgroundColor: primaryColor,
+              backwardsCompatibility: false,
+              iconTheme: IconThemeData(color: textColor), // This should be the same as titleTextStyle
+              titleTextStyle: TextStyle(color: textColor), // This should be the same as iconTheme
+            ),
+            textTheme: TextTheme(
+              headline1: TextStyle(
+                color: textColor,
+              ),
+              headline2: TextStyle(
+                color: textColor,
+              ),
+              headline3: TextStyle(
+                color: textColor,
+              ),
+              headline4: TextStyle(
+                color: textColor,
+              ),
+              headline5: TextStyle(
+                color: textColor,
+              ),
+              headline6: TextStyle(
+                color: textColor,
+              ),
+              subtitle1: TextStyle(
+                color: textColor,
+              ),
+              subtitle2: TextStyle(
+                color: textColor,
+              ),
+              bodyText1: TextStyle(
+                color: textColor,
+              ),
+              bodyText2: TextStyle(
+                color: textColor,
+              ),
+            ),
+          )
+        ),
+        child: Root(),
+      );
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(Root());
+  group('Root Page Widget Test', () {
+    testWidgets('Testing Root Page Load', (tester) async {
+      await tester.pumpWidget(createRoot());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Find the title
+      expect(find.text('All Lists'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Find the Add List floating action button
+      expect(find.widgetWithIcon(FloatingActionButton, Icons.add), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Find the menu button
+      expect(find.byIcon(Icons.menu), findsOneWidget);
+    });
   });
 }
