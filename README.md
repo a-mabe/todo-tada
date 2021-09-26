@@ -18,11 +18,16 @@ See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) 
 
 # Table of Contents
 
-1. [Overview](#overview)
-    1. [Status](#status)
-    1. [Sitemap](#sitemap)
-        1. [TODO Screens](#screens)
-    1. [Packages and Plugins](#packages-and-plugins)
+- [To-do Tada](#to-do-tada)
+  - [Author](#author)
+    - [My Other Apps](#my-other-apps)
+  - [License](#license)
+- [Table of Contents](#table-of-contents)
+- [Overview](#overview)
+  - [Status](#status)
+  - [Sitemap](#sitemap)
+    - [Screens](#screens)
+  - [Packages and Plugins](#packages-and-plugins)
 1.
 
 # Overview
@@ -44,11 +49,21 @@ Initial planned sitemap.
 
 ### Screens
 
-#### 1. All Lists
+1. All Lists
 
-#### 2. Daily Lists
+**Mockup**
 
-#### 3. Other Lists
+![All lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/all-lists.png?raw=true)
+
+2. Daily Lists
+
+**Mockup**
+
+![Daily lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/daily-lists.png?raw=true)
+
+3. Other Lists
+
+![Other lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/other-lists.png?raw=true)
 
 ## Packages and Plugins
 
