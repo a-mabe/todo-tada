@@ -7,12 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
-import 'package:todotada/hexcolor.dart';
-import 'package:todotada/settings.dart';
+
 import 'package:todotada/themenotifier.dart';
 import 'package:todotada/main.dart';
 
