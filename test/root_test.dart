@@ -85,6 +85,7 @@ Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
 void main() {
   group('Root Page Widget Test', () {
     testWidgets('Testing Root Page Load', (tester) async {
+      // Create root page
       await tester.pumpWidget(createRoot());
 
       // Find the title
@@ -96,20 +97,21 @@ void main() {
       // Find the menu button
       expect(find.byIcon(Icons.menu), findsOneWidget);
     });
-  });
 
-  group('Menu Widget Test', () {
-    testWidgets('Testing Menu Drawer', (tester) async {
-      // await tester.pumpWidget(createRoot());
+    testWidgets('Testing Menu Drawer Opening on Root Page', (tester) async {
+      // Create root page
+      await tester.pumpWidget(createRoot());
 
-      // // Find the title
-      // expect(find.text('All Lists'), findsOneWidget);
+      // Open the drawer
+      final ScaffoldState state = tester.firstState(find.byType(Scaffold));
+      state.openDrawer();
 
-      // // Find the Add List floating action button
-      // expect(find.widgetWithIcon(FloatingActionButton, Icons.add), findsOneWidget);
+      // Wait for the drawer to open
+      await tester.pumpAndSettle();
 
-      // // Find the menu button
-      // expect(find.byIcon(Icons.menu), findsOneWidget);
+      // Check that the drawer is open
+      expect(find.text('To-do, Tada'), findsOneWidget);
     });
+
   });
 }
