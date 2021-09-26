@@ -4,31 +4,28 @@
 
 A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
 
-## Author
-
-* Abigail Mabe [mabe.abby.a@gmail.com](mailto:mabe.abby.a@gmail.com)
-
-### My Other Apps
-
-  * I created [Weatheristic](https://weatheristic.app/), a weather condition posting app, as a summer project with the help of [Dhruv Patel](https://github.com/dhruv282).
-
-## License
-
-See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) at the root of the project.
-
 # Table of Contents
 
-- [To-do Tada](#to-do-tada)
-  - [Author](#author)
-    - [My Other Apps](#my-other-apps)
-  - [License](#license)
-- [Table of Contents](#table-of-contents)
+- [Author](#author)
+  - [My Other Apps](#my-other-apps)
+- [License](#license)
 - [Overview](#overview)
   - [Status](#status)
   - [Sitemap](#sitemap)
     - [Screens](#screens)
   - [Packages and Plugins](#packages-and-plugins)
-1.
+
+# Author
+
+* Abigail Mabe [mabe.abby.a@gmail.com](mailto:mabe.abby.a@gmail.com)
+
+## My Other Apps
+
+  * I created [Weatheristic](https://weatheristic.app/), a weather condition posting app, as a summer project with the help of [Dhruv Patel](https://github.com/dhruv282).
+
+# License
+
+See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) at the root of the project.
 
 # Overview
 
