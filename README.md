@@ -16,6 +16,15 @@ A fully open source visual to-do list [Flutter](https://flutter.dev/) applicatio
 
 See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) at the root of the project.
 
+# Table of Contents
+
+1. [Overview](#overview)
+    1. [Status](#status)
+    1. [Sitemap](#sitemap)
+        1. [TODO Screens](#screens)
+    1. [Packages and Plugins](#packages-and-plugins)
+1.
+
 # Overview
 
 This app is a drag and drop visual to-do list. Each icon is supposed to represent a to-do list item. Instead of checking a box, you drag the completed icon from the "To-do" side to the "Tada" side. Implementing a list in this manner makes it easy to visually see how many items need completed and how many have been completed.
