@@ -51,19 +51,21 @@ Initial planned sitemap.
 
 1. All Lists
 
-**Mockup**
+    **Mockup**
 
-![All lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/all-lists.png?raw=true)
+    ![All lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/all-lists.png?raw=true)
 
 2. Daily Lists
 
-**Mockup**
+    **Mockup**
 
-![Daily lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/daily-lists.png?raw=true)
+    ![Daily lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/daily-lists.png?raw=true)
 
 3. Other Lists
 
-![Other lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/other-lists.png?raw=true)
+    **Mockup**
+
+    ![Other lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/other-lists.png?raw=true)
 
 ## Packages and Plugins
 
