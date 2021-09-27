@@ -4,6 +4,8 @@
 
 A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
 
+This app is currently **in progress**.
+
 # Table of Contents
 
 - [Author](#author)
@@ -13,7 +15,7 @@ A fully open source visual to-do list [Flutter](https://flutter.dev/) applicatio
   - [Status](#status)
   - [Sitemap](#sitemap)
     - [Screens](#screens)
-  - [Packages and Plugins](#packages-and-plugins)
+  - [Utilized Packages and Plugins](#utilized-packages-and-plugins)
 
 # Author
 
@@ -64,7 +66,7 @@ Initial planned sitemap.
 
     ![Other lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/other-lists.png?raw=true)
 
-## Packages and Plugins
+## Utilized Packages and Plugins
 
 Flutter allows the [use of packages](https://flutter.dev/docs/development/packages-and-plugins/using-packages) contributed by other developers. This app utilizes a variety of plugins.
 
