@@ -4,7 +4,7 @@
 
 A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
 
-This app is currently **in progress**.
+This app is currently **in progress and actively under developement**. Feel free to utilize GitHub issues, particularly the feature request tag, to suggest things as I'm developing the app.
 
 # Table of Contents
 
@@ -69,7 +69,7 @@ Initial planned sitemap.
 
 ## Utilized Packages and Plugins
 
-Flutter allows the [use of packages](https://flutter.dev/docs/development/packages-and-plugins/using-packages) contributed by other developers. This app utilizes a variety of plugins.
+Flutter allows the [use of packages](https://flutter.dev/docs/development/packages-and-plugins/using-packages) contributed by other developers. This app utilizes a variety of plugins. As different packages and plugins are incorporated into the app, I will list them here.
 
 * [flutter_native_splash](https://pub.dev/packages/flutter_native_splash)
   * Generates native code for the splash screen.
