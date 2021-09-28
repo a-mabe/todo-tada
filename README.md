@@ -39,6 +39,7 @@ The workflow for this app utilizes [GitHub Projects](https://github.com/a-mabe/t
 
 * [Generic To-do Lists](https://github.com/a-mabe/todo-tada/projects/2) covers the basic functionality of the to-do list app.
 * [Daily Lists Screen](https://github.com/a-mabe/todo-tada/projects/1) expands on the general to-do list functionaly by allowing lists to be created for and sorted by specific dates.
+* All the icons are made in [Inkscape](https://inkscape.org/). You can view the list of icons, suggest icons, or suggest changes to existing icons in [this Google Doc](https://docs.google.com/document/d/1pbwKDSxXyNEMPFTxxMaQqzwsmXEjMaDuyFj48iWG1UY/edit?usp=sharing).
 
 ## Sitemap
 
