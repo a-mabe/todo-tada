@@ -14,7 +14,7 @@ This app is currently **in progress**.
 - [Overview](#overview)
   - [Status](#status)
   - [Sitemap](#sitemap)
-    - [Screens](#screens)
+  - [Mockups](#mockups)
   - [Utilized Packages and Plugins](#utilized-packages-and-plugins)
 
 # Author
@@ -47,23 +47,17 @@ Initial planned sitemap.
 
 ![Sitemap](https://github.com/a-mabe/todo-tada/blob/master/docs/images/sitemap_uml.png?raw=true)
 
-### Screens
+## Mockups
 
 1. All Lists
-
-    **Mockup**
 
     ![All lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/all-lists.png?raw=true)
 
 2. Daily Lists
 
-    **Mockup**
-
     ![Daily lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/daily-lists.png?raw=true)
 
 3. Other Lists
-
-    **Mockup**
 
     ![Other lists mockup](https://github.com/a-mabe/todo-tada/blob/master/docs/images/other-lists.png?raw=true)
 
