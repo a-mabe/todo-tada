@@ -4,7 +4,7 @@
 
 A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
 
-This app is currently **in progress and actively under developement**. Feel free to utilize GitHub issues, particularly the feature request tag, to suggest things as I'm developing the app.
+This app is currently **in progress and actively under developement**. Feel free to utilize GitHub issues, particularly the enhancement (feature request) tag, to suggest things as I'm developing the app.
 
 # Table of Contents
 
