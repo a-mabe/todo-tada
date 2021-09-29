@@ -35,11 +35,15 @@ See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) 
 
 # Overview
 
-This app is a drag and drop visual to-do list. Each icon is supposed to represent a to-do list item. Instead of checking a box, you drag the completed icon from the "To-do" side to the "Tada" side. Implementing a list in this manner makes it easy to visually see how many items need completed and how many have been completed.
+This app is a drag and drop visual to-do list. Each icon is supposed to represent a to-do list item. Instead of checking a box or deleting something from the list, you drag the completed icon from the "To-do" side to the "Done" side. The intent is that the visual to-do list makes it easy to see at a glance how many things are left to do. And finishing a task so that you can drag something from one side to other should be fulfilling. The app should also make use of some reward system when you drag something over. Confetti on the screen, haptics, sound plays, etc. Of course, all of this could be turned off and on in settings.
 
 Here's a GIF of me dragging an icon in a mockup to show what I mean:
 
 ![Example GIF](https://github.com/a-mabe/todo-tada/blob/master/docs/gifs/example.gif?raw=true)
+
+Since the app is meant to be for visual people, I plan on making as many parts of the user interface customizable as possible. For example you can change the primary color, text color, and enable/disable dark mode.
+
+![Themes](https://github.com/a-mabe/todo-tada/blob/master/docs/images/theme-banner.png?raw=true)
 
 ## Status
 
