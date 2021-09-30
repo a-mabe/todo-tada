@@ -13,6 +13,7 @@ import 'themenotifier.dart';
 
 late final Color primaryColor;
 late final Color textColor;
+late final Brightness brightness;
 
 ///
 /// -------------
@@ -46,16 +47,22 @@ void main() {
       textColor = Colors.black; // Default
     }
 
+    if (Settings.getValue<bool>('dark-mode', true) == true) {
+      brightness = Brightness.dark;
+    } else {
+      brightness = Brightness.light; // Default
+    }
+
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
             primaryColor: primaryColor,
-            brightness: Brightness.light,
+            brightness: brightness,
             backgroundColor: primaryColor,
             accentColor: primaryColor,
             accentIconTheme: IconThemeData(color: primaryColor),
             iconTheme: IconThemeData(
-              color: Colors.pink
+              color: primaryColor
             ),
             dividerColor: primaryColor,
             toggleableActiveColor: primaryColor,
