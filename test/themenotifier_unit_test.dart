@@ -16,24 +16,30 @@ void main() {
     });
 
     test('Text color should be too dark for dark mode.', () {
+      Color primaryColor = Colors.red;
+      Color textColor = Colors.black;
+      Brightness brightness = Brightness.dark;
+      String alertDialogContent = '';
 
-
-
-      //expect(counter.value, 1);
+      expect(checkThemeSettings(primaryColor, textColor, brightness, alertDialogContent), 'That text color won\'t be visible with dark mode enabled.');
     });
 
     test('Text color should match primary color.', () {
+      Color primaryColor = Colors.red;
+      Color textColor = Colors.red;
+      Brightness brightness = Brightness.dark;
+      String alertDialogContent = '';
 
-
-
-      //expect(counter.value, 1);
+      expect(checkThemeSettings(primaryColor, textColor, brightness, alertDialogContent), 'The text color can\'t match the primary color.');
     });
 
     test('Text color should be accepted.', () {
+      Color primaryColor = Colors.red;
+      Color textColor = Colors.white;
+      Brightness brightness = Brightness.dark;
+      String alertDialogContent = '';
 
-
-
-      //expect(counter.value, 1);
+      expect(checkThemeSettings(primaryColor, textColor, brightness, alertDialogContent), '');
     });
   });
 
