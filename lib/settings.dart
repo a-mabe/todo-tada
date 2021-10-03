@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'themenotifier.dart';
-import 'hexcolor.dart';
+import 'settingsalert.dart';
 
 
 ///
@@ -10,8 +10,45 @@ import 'hexcolor.dart';
 /// ---------
 ///
 
+/// The primary theme color.
+/// 
+/// e.g., Colors.blue
+/// 
 late Color primaryColor;
+
+/// The main text color.
+/// 
+/// e.g., Colors.blue
+/// 
 late Color textColor;
+
+/// The theme brightness.
+/// 
+/// e.g., Brightness.light (light theme)
+/// 
+late Brightness brightness;
+
+/// The content for the settings alert dialog that
+/// pops up if the user tries to set an invalid
+/// theme.
+/// 
+/// e.g., 'You are about to leave this page without saving.'
+/// 
+String alertDialogContent = '';
+
+/// The title for the settings alert dialog that
+/// pops up if the user tries to set an invalid
+/// theme.
+/// 
+/// e.g., 'Alert'
+/// 
+const String alertDialogTitle = 'Whoa!';
+
+/// The continue button text for the settings alert dialog.
+/// 
+/// e.g., 'Continue'
+/// 
+const String continueButtonText = "I'll change it";
 
 ///
 /// -------------
@@ -19,12 +56,16 @@ late Color textColor;
 /// -------------
 ///
 
-
+/// An app settings route.
+/// 
+/// Takes [themeNotifier] as a parameter to notify a theme update when theme
+/// settings (primary color, brightness) are changed.
+///
 class SettingsRoute extends StatefulWidget {
 
-  const SettingsRoute({Key? key, required this.themeNotifier}) : super(key: key);
+  const SettingsRoute({Key? key, this.themeNotifier}) : super(key: key);
 
-  final ThemeNotifier themeNotifier;
+  final ThemeNotifier? themeNotifier;
 
   @override
   _SettingsRouteState createState() => _SettingsRouteState(themeNotifier: themeNotifier);
@@ -32,33 +73,57 @@ class SettingsRoute extends StatefulWidget {
 
 class _SettingsRouteState extends State<SettingsRoute> {
 
-  _SettingsRouteState({required this.themeNotifier});
+  _SettingsRouteState({this.themeNotifier});
 
-  final ThemeNotifier themeNotifier;
+  final ThemeNotifier? themeNotifier;
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return new Scaffold(
       body: SettingsScreen(
         title: 'Application Settings',
         children: [
           SettingsGroup(
             title: 'Theme Settings',
             children: <Widget>[
-              /// 
+              
               /// Brightness Selector
               /// 
-              // SwitchSettingsTile(
-              //   settingKey: 'dark-mode',
-              //   title: 'Dark mode',
-              //   subtitle: 'Enable or disable dark mode.',
-              //   enabledLabel: 'Enabled',
-              //   disabledLabel: 'Disabled',
-              //   leading: Icon(Icons.star),
-              //   onChange: (value) {
-              //     debugPrint('dark-mode: $value');
-              //   },
-              // ),
+              SwitchSettingsTile(
+                settingKey: 'dark-mode',
+                title: 'Dark mode',
+                subtitle: 'Enable or disable dark mode.',
+                enabledLabel: 'Enabled',
+                disabledLabel: 'Disabled',
+                leading: Icon(Icons.dark_mode_sharp),
+                onChange: (value) {
+
+                  /// Grab the primary color string.
+                  /// 
+                  /// e.g, '4287f5'
+                  /// 
+                  primaryColor = getPrimaryColor();
+
+                  /// Grab the text color string.
+                  /// 
+                  /// e.g, '4287f5'
+                  /// 
+                  textColor = getTextColor();
+
+                  /// Convert the value to a brightness setting.
+                  /// 
+                  /// e.g., Brightness.light
+                  /// 
+                  if (value == true)
+                    brightness = Brightness.dark;
+                  else
+                    brightness = Brightness.light; // Default
+
+                  enforceThemeSettingsRules();
+                  
+                },
+              ),
               /// 
               /// Primary Color Selector
               /// 
@@ -67,60 +132,22 @@ class _SettingsRouteState extends State<SettingsRoute> {
                 title: 'Primary Color',
                 defaultValue: Colors.blue,
                 onChange: (value) {
-                  final String textColorString = Settings.getValue<String>('text-color-picker', "");
-                  if (textColorString != "") {
-                    textColor = HexColor.fromHex(textColorString);
-                  } else {
-                    textColor = Colors.black; // Default
-                  }
-                  onThemeChanged(false, this.themeNotifier, ThemeData(
-                      primaryColor: value,
-                      brightness: Brightness.light,
-                      backgroundColor: value,
-                      accentColor: value,
-                      accentIconTheme: IconThemeData(color: value),
-                      dividerColor: value,
-                      toggleableActiveColor: value,
-                      appBarTheme: AppBarTheme(
-                        backgroundColor: value, // This should match the primary color
-                        backwardsCompatibility: false,
-                        iconTheme: IconThemeData(color: textColor), // This should be the same as titleTextStyle
-                        titleTextStyle: TextStyle(color: textColor), // This should be the same as iconTheme
-                      ),
-                      textTheme: TextTheme(
-                        headline1: TextStyle(
-                          color: textColor,
-                        ),
-                        headline2: TextStyle(
-                          color: textColor,
-                        ),
-                        headline3: TextStyle(
-                          color: textColor,
-                        ),
-                        headline4: TextStyle(
-                          color: textColor,
-                        ),
-                        headline5: TextStyle(
-                          color: textColor,
-                        ),
-                        headline6: TextStyle(
-                          color: textColor,
-                        ),
-                        subtitle1: TextStyle(
-                          color: textColor,
-                        ),
-                        subtitle2: TextStyle(
-                          color: textColor,
-                        ),
-                        bodyText1: TextStyle(
-                          color: textColor,
-                        ),
-                        bodyText2: TextStyle(
-                          color: textColor,
-                        ),
-                      )
-                    )
-                  );
+
+                  /// Grab the text color string.
+                  /// 
+                  /// e.g, '4287f5'
+                  /// 
+                  textColor = getTextColor();
+
+                  /// Get whether or not darkmode is enabled.
+                  /// 
+                  /// e.g., 'true'
+                  /// 
+                  brightness = getBrightnessMode();
+
+                  primaryColor = value;
+
+                  enforceThemeSettingsRules();
                 },
               ),
               /// 
@@ -131,66 +158,61 @@ class _SettingsRouteState extends State<SettingsRoute> {
                 title: 'Secondary Color',
                 defaultValue: Colors.black,
                 onChange: (value) {
-                  final String primaryColorString = Settings.getValue<String>('primary-color-picker', "");
-                  if (primaryColorString != "") {
-                    primaryColor = HexColor.fromHex(primaryColorString);
-                  } else {
-                    primaryColor = Colors.blue; // Default
-                  }
-                  onThemeChanged(false, this.themeNotifier, ThemeData(
-                      primaryColor: primaryColor,
-                      brightness: Brightness.light,
-                      backgroundColor: primaryColor,
-                      accentColor: primaryColor,
-                      accentIconTheme: IconThemeData(color: primaryColor),
-                      dividerColor: primaryColor,
-                      toggleableActiveColor: primaryColor,
-                      appBarTheme: AppBarTheme(
-                        backgroundColor: primaryColor, // This should match the primary color
-                        backwardsCompatibility: false,
-                        iconTheme: IconThemeData(color: value), // This should be the same as titleTextStyle
-                        titleTextStyle: TextStyle(color: value), // This should be the same as iconTheme
-                      ),
-                      textTheme: TextTheme(
-                        headline1: TextStyle(
-                          color: value,
-                        ),
-                        headline2: TextStyle(
-                          color: value,
-                        ),
-                        headline3: TextStyle(
-                          color: value,
-                        ),
-                        headline4: TextStyle(
-                          color: value,
-                        ),
-                        headline5: TextStyle(
-                          color: value,
-                        ),
-                        headline6: TextStyle(
-                          color: value,
-                        ),
-                        subtitle1: TextStyle(
-                          color: value,
-                        ),
-                        subtitle2: TextStyle(
-                          color: value,
-                        ),
-                        bodyText1: TextStyle(
-                          color: value,
-                        ),
-                        bodyText2: TextStyle(
-                          color: value,
-                        ),
-                      )
-                    )
-                  );
+
+                  /// Grab the primary color string.
+                  /// 
+                  /// e.g, '4287f5'
+                  /// 
+                  primaryColor = getPrimaryColor();
+
+                  /// Get whether or not darkmode is enabled.
+                  /// 
+                  /// e.g., 'true'
+                  /// 
+                  brightness = getBrightnessMode();
+
+                  textColor = value;
+
+                  enforceThemeSettingsRules();
                 },
               )
             ],
           ),
         ],
       ),
-    );
+    ); 
   }
+
+  /// Checks theme settings and changes theme based on result.
+  /// 
+  void enforceThemeSettingsRules() async {
+    alertDialogContent = checkThemeSettings(primaryColor, textColor, brightness, alertDialogContent);
+    if (alertDialogContent.length == 0) {
+      runOnThemeChanged(primaryColor, textColor, brightness, this.themeNotifier);
+    } else {
+
+      new SettingsAlertDialog.namedConst(
+        '',
+        continueButtonText, 
+        alertDialogTitle,
+        alertDialogContent,
+        true,
+        true,
+        false
+      ).showAlertDialog(context);
+
+      /// Reset theme text color based off of brightness so that the text is
+      /// visible and the user can see to update the theme settings themselves.
+      ///
+      if (Settings.getValue<bool>('dark-mode', false) == false) {
+        await Settings.setValue<String>('text-color-picker', '#000000');
+        runOnThemeChanged(primaryColor, Colors.black, brightness, this.themeNotifier);
+      }
+      else {
+        await Settings.setValue<String>('text-color-picker', '#ffffff');
+        runOnThemeChanged(primaryColor, Colors.white, brightness, this.themeNotifier);
+      }
+    }
+  }
+
 }
