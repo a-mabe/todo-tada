@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'themenotifier.dart';
-import 'hexcolor.dart';
 import 'settingsalert.dart';
 
 
@@ -35,7 +34,7 @@ late Brightness brightness;
 /// 
 /// e.g., 'You are about to leave this page without saving.'
 /// 
-late String alertDialogContent;
+String alertDialogContent = '';
 
 /// The title for the settings alert dialog that
 /// pops up if the user tries to set an invalid
@@ -64,9 +63,9 @@ const String continueButtonText = "I'll change it";
 ///
 class SettingsRoute extends StatefulWidget {
 
-  const SettingsRoute({Key? key, required this.themeNotifier}) : super(key: key);
+  const SettingsRoute({Key? key, this.themeNotifier}) : super(key: key);
 
-  final ThemeNotifier themeNotifier;
+  final ThemeNotifier? themeNotifier;
 
   @override
   _SettingsRouteState createState() => _SettingsRouteState(themeNotifier: themeNotifier);
@@ -74,9 +73,9 @@ class SettingsRoute extends StatefulWidget {
 
 class _SettingsRouteState extends State<SettingsRoute> {
 
-  _SettingsRouteState({required this.themeNotifier});
+  _SettingsRouteState({this.themeNotifier});
 
-  final ThemeNotifier themeNotifier;
+  final ThemeNotifier? themeNotifier;
   
   @override
   Widget build(BuildContext context) {
@@ -187,9 +186,21 @@ class _SettingsRouteState extends State<SettingsRoute> {
   /// Checks theme settings and changes theme based on result.
   /// 
   void enforceThemeSettingsRules() async {
-    if (checkThemeSettings()) {
+    alertDialogContent = checkThemeSettings(primaryColor, textColor, brightness, alertDialogContent);
+    if (alertDialogContent.length == 0) {
       runOnThemeChanged(primaryColor, textColor, brightness, this.themeNotifier);
     } else {
+
+      new SettingsAlertDialog.namedConst(
+        '',
+        continueButtonText, 
+        alertDialogTitle,
+        alertDialogContent,
+        true,
+        true,
+        false
+      ).showAlertDialog(context);
+
       /// Reset theme text color based off of brightness so that the text is
       /// visible and the user can see to update the theme settings themselves.
       ///
@@ -202,77 +213,6 @@ class _SettingsRouteState extends State<SettingsRoute> {
         runOnThemeChanged(primaryColor, Colors.white, brightness, this.themeNotifier);
       }
     }
-  }
-
-  /// Checks the theme settings.
-  /// 
-  /// User might accidentally set a text color that is too light or dark
-  /// for the brightness mode, or the text color might match the primary
-  /// color.
-  /// 
-  /// Heavily adapted from https://api.flutter.dev/flutter/material/ThemeData/estimateBrightnessForColor.html
-  /// 
-  bool checkThemeSettings() {
-
-    /// Grab the primary color string.
-    /// 
-    /// e.g, '4287f5'
-    /// 
-    final String primaryColorString = Settings.getValue<String>('primary-color-picker', '');
-    if (primaryColorString != '') {
-      primaryColor = HexColor.fromHex(primaryColorString);
-    } else {
-      primaryColor = Colors.blue; // Default
-    }
-
-    /// Grab the text color string.
-    /// 
-    /// e.g, '4287f5'
-    /// 
-    final String textColorString = Settings.getValue<String>('text-color-picker', '');
-    if (textColorString != '') {
-      textColor = HexColor.fromHex(textColorString);
-    } else {
-      textColor = Colors.black; // Default
-    }
-
-    /// First check that the text color will be visible on the selected brightness.
-    /// 
-    /// i.e. if the color is too light and darkmode is disabled, the user won't be
-    /// able to read the text.
-    /// 
-    final double relativeTextColorLuminance = textColor.computeLuminance();
-    const double lightThreshold = 0.5;
-    const double darkThreshold = 0.012;
-    double computed = (relativeTextColorLuminance + 0.05) * (relativeTextColorLuminance + 0.05);
-
-    alertDialogContent = '';
-    if (computed > lightThreshold && brightness == Brightness.light)
-      alertDialogContent = "That text color won't be visible with dark mode disabled.";
-    else if (computed < darkThreshold && brightness == Brightness.dark)
-      alertDialogContent = "That text color won't be visible with dark mode enabled.";
-    else if (primaryColor == textColor)
-      alertDialogContent = "The text color can't match the primary color.";
-    else 
-      alertDialogContent = '';
-
-    /// Force user to change theme settings if they don't meet the requirements.
-    /// 
-    if (alertDialogContent.length > 0) {
-      new SettingsAlertDialog.namedConst(
-        '',
-        continueButtonText, 
-        alertDialogTitle,
-        alertDialogContent,
-        true,
-        true,
-        false
-      ).showAlertDialog(context);
-
-      return false;
-    }
-
-    return true;
   }
 
 }

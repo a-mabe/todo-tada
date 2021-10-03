@@ -66,6 +66,41 @@ Brightness getBrightnessMode() {
   }
 }
 
+/// Checks the theme settings and sends back an alert.
+/// 
+/// User might accidentally set a text color that is too light or dark
+/// for the brightness mode, or the text color might match the primary
+/// color.
+/// 
+/// Heavily adapted from https://api.flutter.dev/flutter/material/ThemeData/estimateBrightnessForColor.html
+/// 
+String checkThemeSettings(Color _primaryColor, Color _textColor, Brightness _brightness, String alertDialogContent) {
+
+  /// First check that the text color will be visible on the selected brightness.
+  /// 
+  /// i.e. if the color is too light and darkmode is disabled, the user won't be
+  /// able to read the text.
+  /// 
+  final double relativeTextColorLuminance = _textColor.computeLuminance();
+  const double lightThreshold = 0.5;
+  const double darkThreshold = 0.012;
+  double computed = (relativeTextColorLuminance + 0.05) * (relativeTextColorLuminance + 0.05);
+
+  alertDialogContent = '';
+  if (computed > lightThreshold && _brightness == Brightness.light)
+    alertDialogContent = "That text color won't be visible with dark mode disabled.";
+  else if (computed < darkThreshold && _brightness == Brightness.dark)
+    alertDialogContent = "That text color won't be visible with dark mode enabled.";
+  else if (_primaryColor == _textColor)
+    alertDialogContent = "The text color can't match the primary color.";
+  else 
+    alertDialogContent = '';
+
+  /// Force user to change theme settings if they don't meet the requirements.
+  /// 
+  return alertDialogContent;
+}
+
 /// 
 /// ------------
 /// END HELPER FUNCTIONS
