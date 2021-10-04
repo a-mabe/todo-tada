@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
+import 'package:todotada/createlist.dart';
 import 'settings.dart';
 import 'themenotifier.dart';
+import 'createlist.dart';
 
 ///
 /// ---------
@@ -246,15 +248,18 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: print,
+        onPressed: createList,
         tooltip: 'Increment',
         child: Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1?.color),
       ),
     );
   }
 
-  void print() {
-    debugPrint("Pressed");
+  void createList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SecondScreen()),
+    );
   }
 
 }
