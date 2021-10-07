@@ -28,12 +28,6 @@ The workflow for this app utilizes [GitHub Projects](https://github.com/a-mabe/t
 
 See the [license file](https://github.com/a-mabe/todo-tada/blob/master/LICENSE) at the root of the project.
 
-## Sitemap
-
-Initial planned sitemap.
-
-![Sitemap](https://github.com/a-mabe/todo-tada/blob/master/docs/images/sitemap_uml.png?raw=true)
-
 ## Utilized Packages and Plugins
 
 Flutter allows the [use of packages](https://flutter.dev/docs/development/packages-and-plugins/using-packages) contributed by other developers. This app utilizes a variety of plugins. As different packages and plugins are incorporated into the app, I will list them here.
