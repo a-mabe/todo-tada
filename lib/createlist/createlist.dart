@@ -58,7 +58,7 @@ class CreateListFormState extends State<CreateListForm> {
                   }
                   return null;
                 },
-                style: TextStyle(color: textColor),
+                style: TextStyle(color: textColor), // Change the color of the input text
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 1),
@@ -92,10 +92,18 @@ class CreateListFormState extends State<CreateListForm> {
                     const SnackBar(content: Text('Creating list...')),
                   );
 
-                  Navigator.push(
+                  /// Navigate to the ViewList route for the created list and clear
+                  /// the CreateList route from the stack so that the user goes 
+                  /// back to the home page, not the CreateList page.
+                  ///
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => ViewList()),
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => ViewList(),
+                    ),
+                    ModalRoute.withName('/'),
                   );
+
                 }
               },
             ),
