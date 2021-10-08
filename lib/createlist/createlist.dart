@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todotada/main.dart';
+import 'package:todotada/viewlist/viewlist.dart';
 import '../themenotifier/themenotifier.dart';
 
 // Define a custom Form widget.
@@ -51,7 +51,13 @@ class CreateListFormState extends State<CreateListForm> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              child: TextField(
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
                 style: TextStyle(color: textColor),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -84,6 +90,11 @@ class CreateListFormState extends State<CreateListForm> {
                   //
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Creating list...')),
+                  );
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewList()),
                   );
                 }
               },
