@@ -258,7 +258,7 @@ class _MainPageState extends State<MainPage> {
   void createList() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SecondScreen()),
+      MaterialPageRoute(builder: (context) => CreateListForm()),
     );
   }
 
