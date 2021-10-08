@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
-import 'themenotifier.dart';
+import '../themenotifier/themenotifier.dart';
 import 'settingsalert.dart';
 
 

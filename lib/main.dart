@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
-import 'package:todotada/createlist.dart';
-import 'settings.dart';
-import 'themenotifier.dart';
-import 'createlist.dart';
+import 'package:todotada/createlist/createlist.dart';
+import 'settings/settings.dart';
+import 'themenotifier/themenotifier.dart';
+import 'createlist/createlist.dart';
 
 ///
 /// ---------

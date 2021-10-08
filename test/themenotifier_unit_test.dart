@@ -1,7 +1,7 @@
 // Import the test package and Counter class
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todotada/themenotifier.dart';
+import 'package:todotada/themenotifier/themenotifier.dart';
 
 void main() {
 

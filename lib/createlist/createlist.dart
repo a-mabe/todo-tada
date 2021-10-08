@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todotada/main.dart';
-import 'themenotifier.dart';
+import '../themenotifier/themenotifier.dart';
 
 // Define a custom Form widget.
 //
