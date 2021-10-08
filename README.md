@@ -8,6 +8,8 @@ A fully open source visual to-do list [Flutter](https://flutter.dev/) applicatio
 
 This app is currently **in progress and actively under developement**. Feel free to utilize GitHub issues, particularly the enhancement (feature request) tag, to suggest things as I'm developing the app.
 
+For more detailed information on the design, development status, and implementation of the app, please [see the wiki](https://github.com/a-mabe/todo-tada/wiki).
+
 # Status and Contributing
 
 The workflow for this app utilizes [GitHub Projects](https://github.com/a-mabe/todo-tada/projects).
