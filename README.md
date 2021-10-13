@@ -2,7 +2,7 @@
   <a href="https://github.com/amabe/todo-tada/actions/workflows/tests.yml">
     <img alt="Tests" src="https://img.shields.io/github/workflow/status/a-mabe/todo-tada/Flutter_Tests?label=tests&logo=github&color=brightgreen&style=flat-square">
   </a>
-  <a href="https://github.com/a-mabe/todo-tada">
+  <a href="https://github.com/a-mabe/todo-tada/wiki/v-1.0.0-b0">
     <img alt="Version" src="https://img.shields.io/badge/version-dev-orange?style=flat-square">
   </a>
   <a href="https://opensource.org/licenses/BSD-3-Clause">
