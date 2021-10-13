@@ -1,3 +1,13 @@
+/// Copyright (C) 2021 Abigail Mabe - All Rights Reserved
+/// You may use, distribute and modify this code under the terms 
+/// of the license.
+///
+/// You should have received a copy of the license with this file.
+/// If not, please email <mabe.abby.a@gmail.com>
+/// 
+/// Route to create a new list and set its name and other attributes.
+/// 
+
 import 'package:flutter/material.dart';
 import 'package:todotada/viewlist/viewlist.dart';
 import '../themenotifier/themenotifier.dart';
