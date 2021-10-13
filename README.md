@@ -1,3 +1,9 @@
+<h1 align="center">To-do Tada</h1>
+
+<p align="center">
+  A fully open source visual to-do list <a href="https://flutter.dev/">Flutter</a> application.
+</p>
+
 <p align="center">
   <a href="https://github.com/amabe/todo-tada/actions/workflows/tests.yml">
     <img alt="Tests" src="https://img.shields.io/github/workflow/status/a-mabe/todo-tada/Flutter_Tests?label=tests&logo=github&color=brightgreen&style=flat-square">
@@ -10,13 +16,13 @@
   </a>
 </p>
 
-# To-do Tada
+# Description
 
-A fully open source visual to-do list [Flutter](https://flutter.dev/) application.
+⚠️ This app is currently **in progress and actively under developement**. 
 
-This app is currently **in progress and actively under developement**. Feel free to utilize GitHub issues, particularly the enhancement (feature request) tag, to suggest things as I'm developing the app.
+✔️ Feel free to utilize GitHub issues, particularly the enhancement (feature request) tag, to suggest things as I'm developing the app.
 
-For more detailed information on the design, development status, and implementation of the app, please [see the wiki](https://github.com/a-mabe/todo-tada/wiki).
+ℹ️ Please [see the wiki](https://github.com/a-mabe/todo-tada/wiki) for more detailed information on the design, development status, and implementation of the app.
 
 # Running from Source
 
