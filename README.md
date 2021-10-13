@@ -1,6 +1,14 @@
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-![Status](https://github.com/a-mabe/todo-tada/actions/workflows/tests.yml/badge.svg)
-[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
+<p align="center">
+  <a href="https://github.com/amabe/todo-tada/actions/workflows/tests.yml">
+    <img alt="Tests" src="https://img.shields.io/github/workflow/status/a-mabe/todo-tada/Flutter_Tests?label=tests&logo=github&color=brightgreen&style=flat-square">
+  </a>
+  <a href="https://github.com/a-mabe/todo-tada">
+    <img alt="Version" src="https://img.shields.io/badge/version-dev-orange?style=flat-square">
+  </a>
+  <a href="https://opensource.org/licenses/BSD-3-Clause">
+    <img alt="BSD 3-clause" src="https://img.shields.io/github/license/a-mabe/todo-tada?color=blue&style=flat-square">
+  </a>
+</p>
 
 # To-do Tada
 
