@@ -31,6 +31,7 @@ dependencies:
   shared_preferences: ^2.0.6
   flutter_native_splash: ^1.2.1
   flutter_settings_screens: ^0.3.1-null-safety
+  sqflite: ^2.0.0+4
 
 dev_dependencies:
   flutter_test:
