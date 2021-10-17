@@ -1,7 +1,16 @@
-// Import the test package and Counter class
+/// Copyright (C) 2021 Abigail Mabe - All Rights Reserved
+/// You may use, distribute and modify this code under the terms 
+/// of the license.
+///
+/// You should have received a copy of the license with this file.
+/// If not, please email <mabe.abby.a@gmail.com>
+/// 
+/// Tests methods for the ThemeNotifier.
+/// 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todotada/themenotifier.dart';
+import 'package:todotada/themenotifier/themenotifier.dart';
 
 void main() {
 

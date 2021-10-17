@@ -1,3 +1,13 @@
+/// Copyright (C) 2021 Abigail Mabe - All Rights Reserved
+/// You may use, distribute and modify this code under the terms 
+/// of the license.
+///
+/// You should have received a copy of the license with this file.
+/// If not, please email <mabe.abby.a@gmail.com>
+/// 
+/// Defines the alert box for the settings page.
+/// 
+
 import 'package:flutter/material.dart';
 
 class SettingsAlertDialog {

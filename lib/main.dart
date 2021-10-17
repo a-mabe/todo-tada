@@ -1,12 +1,31 @@
+/// Copyright (C) 2021 Abigail Mabe - All Rights Reserved
+/// You may use, distribute and modify this code under the terms 
+/// of the license.
+///
+/// You should have received a copy of the license with this file.
+/// If not, please email <mabe.abby.a@gmail.com>
+/// 
+/// Route for the Root Page that loads on startup.
+/// 
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
-import 'settings.dart';
-import 'themenotifier.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todotada/createlist/createlist.dart';
+import 'package:todotada/listdata/todolist.dart';
+import 'settings/settings.dart';
+import 'themenotifier/themenotifier.dart';
+import 'createlist/createlist.dart';
+import 'database/databasemanager.dart';
+import 'listdata/todolist.dart';
+import 'listdata/todoitem.dart';
+
 
 ///
 /// ---------
-/// VARIABLES
+/// FIELDS
 /// ---------
 ///
 
@@ -28,9 +47,27 @@ late final Color textColor;
 /// 
 late final Brightness brightness;
 
+/// The number of lists in the database.
+/// 
+/// e.g., 3
+/// 
+late int numberOfLists;
+
+/// The List of TodoLists in the database.
+/// 
+/// e.g., List<TodoLists>
+/// 
+late List<TodoList> lists;
+
+/// The List of TodoItems in the database.
+/// 
+/// e.g., List<TodoItems>
+/// 
+late List<TodoItem> items;
+
 ///
 /// -------------
-/// END VARIABLES
+/// END FIELDS
 /// -------------
 ///
 
@@ -41,7 +78,23 @@ late final Brightness brightness;
 /// select their theme. Based off of the method from the following article:
 /// https://betterprogramming.pub/how-to-create-a-dynamic-theme-in-flutter-using-provider-e6ad1f023899.
 ///
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Future<Database> database = DatabaseManager().open();
+
+  lists = await DatabaseManager().lists(database);
+  items = await DatabaseManager().items(database);
+  numberOfLists = lists.length;
+
+
+  print(lists);
+  print(items);
+
+
+  /// Run app once settings are initialized.
+  /// 
   initSettings().then((_) {
 
     /// Grab the primary color string.
@@ -122,7 +175,6 @@ void main() {
 }
 
 
-/// 
 /// Initialize the settings plugin.
 /// 
 Future<void> initSettings() async {
@@ -246,15 +298,18 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: print,
+        onPressed: createList,
         tooltip: 'Increment',
         child: Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1?.color),
       ),
     );
   }
 
-  void print() {
-    debugPrint("Pressed");
+  void createList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateListForm()),
+    );
   }
 
 }
