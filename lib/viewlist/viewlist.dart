@@ -10,9 +10,7 @@
 
 import 'package:flutter/material.dart';
 import '../themenotifier/themenotifier.dart';
-import '../database/databasemanager.dart';
 import '../listdata/todolist.dart';
-import '../listdata/todoitem.dart';
 
 // Define a custom Form widget.
 //

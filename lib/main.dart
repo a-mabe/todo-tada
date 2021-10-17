@@ -84,27 +84,6 @@ void main() async {
 
   Future<Database> database = DatabaseManager().open();
 
-  // var list = TodoList(
-  //   listName: "test",
-  //   listColor: Colors.blue.value.toString(),
-  //   listType: "regular",
-  //   creationDate: DateTime.now().toString(),
-  //   lastUpdated: DateTime.now().toString(),
-  //   id: 0,
-  // );
-
-  // var item = TodoItem(
-  //   title: "title",
-  //   description: "description",
-  //   icon: "icon",
-  //   status: 0,
-  //   id: 0,
-  //   listId: 0
-  // );
-
-  // await DatabaseManager().insertList(list, database);
-  // await DatabaseManager().insertItem(item, database);
-
   lists = await DatabaseManager().lists(database);
   items = await DatabaseManager().items(database);
   numberOfLists = lists.length;
