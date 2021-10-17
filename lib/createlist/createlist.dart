@@ -9,12 +9,21 @@
 /// 
 
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todotada/main.dart';
 import 'package:todotada/viewlist/viewlist.dart';
-import '../themenotifier/themenotifier.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:uuid/uuid.dart';
 
-// Define a custom Form widget.
-//
+import '../themenotifier/themenotifier.dart';
+import '../database/databasemanager.dart';
+import '../listdata/todolist.dart';
+import '../themenotifier/hexcolor.dart';
+
+/// Define a custom Form widget.
+/// 
 class CreateListForm extends StatefulWidget {
+
   const CreateListForm({Key? key}) : super(key: key);
 
   @override
@@ -23,17 +32,29 @@ class CreateListForm extends StatefulWidget {
   }
 }
 
-// Define a corresponding State class.
-// This class holds data related to the form.
-//
+/// Define a corresponding State class.
+/// This class holds data related to the form.
+///
 class CreateListFormState extends State<CreateListForm> {
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a `GlobalKey<FormState>`,
-  // not a GlobalKey<MyCustomFormState>.
-  //
-  final _formKey = GlobalKey<FormState>();
+
+  /// 
+  /// ---------------
+  /// FIELDS
+  /// ---------------
+  /// 
+
+  /// Create a global key that uniquely identifies the Form widget
+  /// and allows validation of the form.
+  ///
+  /// Note: This is a `GlobalKey<FormState>`,
+  /// not a GlobalKey<MyCustomFormState>.
+  ///
+  final formKey = GlobalKey<FormState>();
+
+  /// Text controller to retrieve the current value
+  /// of the TextField.
+  /// 
+  final textController = TextEditingController();
 
   /// Grab the primary color string.
   /// 
@@ -47,6 +68,41 @@ class CreateListFormState extends State<CreateListForm> {
   /// 
   final Color textColor = getTextColor();
 
+  /// Color to associate with this list.
+  /// 
+  /// Will be used when displaying the list in the grid as well
+  /// as on the appbar when the list is viewed.
+  /// 
+  /// e.g., Colors.blue
+  /// 
+  Color listColor = Colors.blue;
+
+  /// 
+  /// ---------------
+  /// END FIELDS
+  /// ---------------
+  /// 
+
+  /// 
+  /// ---------------
+  /// FUNCTIONS
+  /// ---------------
+  /// 
+
+  /// Clean up the controller when the widget is disposed.
+  /// 
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  /// 
+  /// ---------------
+  /// END FUNCTIONS
+  /// ---------------
+  /// 
+  
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -56,12 +112,13 @@ class CreateListFormState extends State<CreateListForm> {
         title: const Text('Create List'),
       ),
       body: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextFormField(
+                controller: textController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
@@ -80,6 +137,19 @@ class CreateListFormState extends State<CreateListForm> {
                 ),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 24.0),
+              child: ColorPickerSettingsTile(
+                settingKey: 'last-color',
+                title: 'List Color',
+                defaultValue: Colors.blue,
+                onChange: (value) {
+
+                  listColor = value;
+                  
+                },
+              ),
+            ),
             ElevatedButton.icon(
               icon: Icon(
                 Icons.add,
@@ -91,16 +161,37 @@ class CreateListFormState extends State<CreateListForm> {
                 primary: primaryColor,
                 onPrimary: textColor
               ),
-              onPressed: () {
+              onPressed: () async {
                 // Validate returns true if the form is valid, or false otherwise.
                 //
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
                   //
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Creating list...')),
                   );
+
+                  /// Open the database.
+                  /// 
+                  Future<Database> database = DatabaseManager().open();
+
+                  /// Create the TodoList object.
+                  ///
+                  var newList = TodoList(
+                    listName: textController.text,
+                    listColor: listColor.toHex(),
+                    listType: "regular",
+                    creationDate: DateTime.now().toString(),
+                    lastUpdated: DateTime.now().toString(),
+                    id: Uuid().v1(),
+                  );
+
+                  /// Insert the list into the database.
+                  /// 
+                  await DatabaseManager().insertList(newList, database);
+
+                  print(lists);
 
                   /// Navigate to the ViewList route for the created list and clear
                   /// the CreateList route from the stack so that the user goes 
@@ -109,7 +200,7 @@ class CreateListFormState extends State<CreateListForm> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => ViewList(),
+                      builder: (BuildContext context) => ViewList(list: newList)
                     ),
                     ModalRoute.withName('/'),
                   );

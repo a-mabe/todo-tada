@@ -20,25 +20,37 @@ class TodoItem {
   /// 
   /// e.g., "Vacuum"
   /// 
-  String title = "To-do";
+  final String title;
 
   /// Description for the to-do item.
   /// 
   /// e.g., "I need to do X but do it in Y way"
   /// 
-  String description = "I need to do X but do it in Y way";
+  final String description;
 
   /// Icon to display for the to-do item.
   /// 
   /// e.g., "broom"
   /// 
-  String icon = "vacuum";
+  final String icon;
 
   /// Whether or not the to-do item is done.
   /// 
-  /// i.e., true for completed, false for incomplete.
+  /// i.e., 1 (true) for completed, 0 (false) for incomplete.
   /// 
-  bool status = false;
+  final int status;
+
+  /// Identifying string for the item.
+  /// 
+  /// e.g., '6c84fb90-12c4-11e1-840d-7b25c5ee775a'
+  /// 
+  final String id;
+
+  /// Identifying string for the list this item belongs to.
+  /// 
+  /// e.g., '6c84fb90-12c4-11e1-840d-7b25c5ee775a'
+  /// 
+  final String listId;
 
   ///
   /// -------------
@@ -64,16 +76,15 @@ class TodoItem {
   /// CONSTRUCTORS
   /// -------------
   ///
-  
-  TodoItem.namedConst(String title,
-                      String description,
-                      String icon,
-                      bool status) {
-    this.title = title;
-    this.description = description;
-    this.icon = icon;
-    this.status = status;
-  }
+
+  TodoItem({
+    required this.title,
+    required this.description,
+    required this.icon,
+    required this.status,
+    required this.id,
+    required this.listId
+  });
 
   /// 
   /// -------------
@@ -86,6 +97,25 @@ class TodoItem {
   /// FUNCTIONS
   /// -------------
   ///
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'icon': icon,
+      'status': status,
+      'id': id,
+      'listId': listId
+    };
+  }
+
+  /// Implement toString to print information about 
+  /// each TodoItem more easily.
+  /// 
+  @override
+  String toString() {
+    return 'TodoItem{id: $id, listId: $listId, title: $title, description: $description, icon: $icon, status: $status}';
+  }
 
   /// 
   /// -------------

@@ -10,15 +10,23 @@
 
 import 'package:flutter/material.dart';
 import '../themenotifier/themenotifier.dart';
+import '../database/databasemanager.dart';
+import '../listdata/todolist.dart';
+import '../listdata/todoitem.dart';
 
 // Define a custom Form widget.
 //
 class ViewList extends StatefulWidget {
-  const ViewList({Key? key}) : super(key: key);
+
+  /// The list to view.
+  /// 
+  final TodoList list;
+
+  const ViewList({Key? key, required this.list}) : super(key: key);
 
   @override
   ViewListState createState() {
-    return ViewListState();
+    return ViewListState(list: list);
   }
 }
 
@@ -26,6 +34,12 @@ class ViewList extends StatefulWidget {
 // This class holds data related to the form.
 //
 class ViewListState extends State<ViewList> {
+
+  ViewListState({required this.list});
+
+  /// The list to view.
+  /// 
+  final TodoList list;
 
   /// Grab the primary color string.
   /// 
@@ -45,7 +59,7 @@ class ViewListState extends State<ViewList> {
     //
     return new Scaffold(
       appBar: AppBar(
-        title: const Text('Create List'),
+        title: Text(list.listName),
       ),
     );
   }

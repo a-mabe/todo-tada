@@ -22,7 +22,7 @@ class TodoList {
   /// 
   /// e.g., "Tuesday's Cleaning List"
   /// 
-  String listName = "To-do List";
+  final String listName;
 
   /// The hex color string associated with the list.
   /// 
@@ -31,13 +31,13 @@ class TodoList {
   /// 
   /// e.g., "4287f5" which equates to Colors.blue
   /// 
-  String listColor = "4287f5";
+  final String listColor;
 
   /// The type of list.
   /// 
   /// e.g., "regular" or "grocery" or "daily"
   /// 
-  String listType = "regular";
+  final String listType;
 
   /// The date and time that the list was created.
   /// 
@@ -45,7 +45,7 @@ class TodoList {
   /// 
   /// e.g., "2021-10-13 15:47:03.788320"
   /// 
-  String creationDate = DateTime.now().toString();
+  final String creationDate;
 
   /// The date and time that the list was last updated.
   /// 
@@ -53,25 +53,25 @@ class TodoList {
   /// 
   /// e.g., "2021-10-13 15:47:03.788320"
   /// 
-  String lastUpdated = DateTime.now().toString();
+  final String lastUpdated;
 
-  /// Identifying number for the list.
+  /// Identifying string for the list.
   /// 
-  /// e.g., 9
+  /// e.g., '6c84fb90-12c4-11e1-840d-7b25c5ee775a'
   /// 
-  int id = 0;
+  final String id;
 
   /// The list of TodoItems that are considered still "to-do".
   /// 
   /// These items would appear on the to-do side of the list.
   /// 
-  List<TodoItem> itemsTodo = [];
+  final List<TodoItem> itemsTodo = [];
 
   /// The list of TodoItems that are considered "done".
   /// 
   /// These items would appear on the done side of the list.
   /// 
-  List<TodoItem> itemsDone = [];
+  final List<TodoItem> itemsDone = [];
 
   /// 
   /// -------------
@@ -97,23 +97,14 @@ class TodoList {
   /// -------------
   ///
 
-  TodoList.namedConst(String listName,
-                      String listColor,
-                      String listType,
-                      String creationDate,
-                      String lastUpdated,
-                      int id,
-                      List<TodoItem> itemsTodo,
-                      List<TodoItem> itemsDone) {
-    this.listName = listName;
-    this.listColor = listColor;
-    this.listType = listType;
-    this.creationDate = creationDate;
-    this.lastUpdated = lastUpdated;
-    this.id = id;
-    this.itemsTodo = itemsTodo;
-    this.itemsDone = itemsDone;
-  }
+  TodoList({
+    required this.listName,
+    required this.listColor,
+    required this.listType,
+    required this.creationDate,
+    required this.lastUpdated,
+    required this.id
+  });
 
   /// 
   /// -------------
@@ -126,6 +117,29 @@ class TodoList {
   /// FUNCTIONS
   /// -------------
   ///
+
+  /// Convert a TodoList into a map.
+  /// 
+  /// Keys must correspond to the columns in the database.
+  /// 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'listName': listName,
+      'listColor': listColor,
+      'listType': listType,
+      'creationDate': creationDate,
+      'lastUpdated': lastUpdated
+    };
+  }
+
+  /// Implement toString to print information about 
+  /// each TodoList more easily.
+  /// 
+  @override
+  String toString() {
+    return 'TodoList{id: $id, listName: $listName, listColor: $listColor, listType: $listType, creationDate: $creationDate, lastUpdated: $lastUpdated, itemsTodo: $itemsTodo, itemsDone: $itemsDone}';
+  }
 
   /// 
   /// -------------

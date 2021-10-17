@@ -9,12 +9,19 @@
 /// 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:todotada/createlist/createlist.dart';
+import 'package:todotada/listdata/todolist.dart';
 import 'settings/settings.dart';
 import 'themenotifier/themenotifier.dart';
 import 'createlist/createlist.dart';
+import 'database/databasemanager.dart';
+import 'listdata/todolist.dart';
+import 'listdata/todoitem.dart';
+
 
 ///
 /// ---------
@@ -40,6 +47,24 @@ late final Color textColor;
 /// 
 late final Brightness brightness;
 
+/// The number of lists in the database.
+/// 
+/// e.g., 3
+/// 
+late int numberOfLists;
+
+/// The List of TodoLists in the database.
+/// 
+/// e.g., List<TodoLists>
+/// 
+late List<TodoList> lists;
+
+/// The List of TodoItems in the database.
+/// 
+/// e.g., List<TodoItems>
+/// 
+late List<TodoItem> items;
+
 ///
 /// -------------
 /// END FIELDS
@@ -53,7 +78,44 @@ late final Brightness brightness;
 /// select their theme. Based off of the method from the following article:
 /// https://betterprogramming.pub/how-to-create-a-dynamic-theme-in-flutter-using-provider-e6ad1f023899.
 ///
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Future<Database> database = DatabaseManager().open();
+
+  // var list = TodoList(
+  //   listName: "test",
+  //   listColor: Colors.blue.value.toString(),
+  //   listType: "regular",
+  //   creationDate: DateTime.now().toString(),
+  //   lastUpdated: DateTime.now().toString(),
+  //   id: 0,
+  // );
+
+  // var item = TodoItem(
+  //   title: "title",
+  //   description: "description",
+  //   icon: "icon",
+  //   status: 0,
+  //   id: 0,
+  //   listId: 0
+  // );
+
+  // await DatabaseManager().insertList(list, database);
+  // await DatabaseManager().insertItem(item, database);
+
+  lists = await DatabaseManager().lists(database);
+  items = await DatabaseManager().items(database);
+  numberOfLists = lists.length;
+
+
+  print(lists);
+  print(items);
+
+
+  /// Run app once settings are initialized.
+  /// 
   initSettings().then((_) {
 
     /// Grab the primary color string.
@@ -134,7 +196,6 @@ void main() {
 }
 
 
-/// 
 /// Initialize the settings plugin.
 /// 
 Future<void> initSettings() async {
