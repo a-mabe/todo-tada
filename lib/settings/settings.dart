@@ -125,10 +125,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                   /// 
                   /// e.g., Brightness.light
                   /// 
-                  if (value == true)
-                    brightness = Brightness.dark;
-                  else
-                    brightness = Brightness.light; // Default
+                  brightness = value ? Brightness.dark : Brightness.light; // Default
 
                   enforceThemeSettingsRules();
                   
@@ -185,7 +182,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
 
                   enforceThemeSettingsRules();
                 },
-              )
+              ),
             ],
           ),
         ],
@@ -208,13 +205,13 @@ class _SettingsRouteState extends State<SettingsRoute> {
         alertDialogContent,
         true,
         true,
-        false
+        false,
       ).showAlertDialog(context);
 
       /// Reset theme text color based off of brightness so that the text is
       /// visible and the user can see to update the theme settings themselves.
       ///
-      if (Settings.getValue<bool>('dark-mode', false) == false) {
+      if (!Settings.getValue<bool>('dark-mode', false)) {
         await Settings.setValue<String>('text-color-picker', '#000000');
         runOnThemeChanged(primaryColor, Colors.black, brightness, this.themeNotifier);
       }

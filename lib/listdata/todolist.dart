@@ -103,7 +103,7 @@ class TodoList {
     required this.listType,
     required this.creationDate,
     required this.lastUpdated,
-    required this.id
+    required this.id,
   });
 
   /// 
@@ -129,7 +129,7 @@ class TodoList {
       'listColor': listColor,
       'listType': listType,
       'creationDate': creationDate,
-      'lastUpdated': lastUpdated
+      'lastUpdated': lastUpdated,
     };
   }
 

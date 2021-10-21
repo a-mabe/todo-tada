@@ -76,7 +76,7 @@ class SettingsAlertDialog {
                                  String dialogContent,
                                  bool barrierDismissable,
                                  bool androidBackWillPop,
-                                 bool addCancelButton
+                                 bool addCancelButton,
   ) {
     this.cancelButtonText = cancelButtonText;
     this.continueButtonText = continueButtonText;
@@ -117,10 +117,7 @@ class SettingsAlertDialog {
     /// Determine the number of buttons to display.
     /// 
     List<Widget> actions = [cancelButton, continueButton];
-    if (addCancelButton)
-      actions = [cancelButton, continueButton];
-    else
-      actions = [continueButton];
+    actions = addCancelButton ? [cancelButton, continueButton] : [continueButton];
 
 
     /// Set up the dialog.
@@ -149,7 +146,7 @@ class SettingsAlertDialog {
 
         return new WillPopScope(
           onWillPop: () async => androidBackWillPop,
-          child: alert
+          child: alert,
         );
 
       },

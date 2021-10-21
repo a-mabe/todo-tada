@@ -123,6 +123,7 @@ class CreateListFormState extends State<CreateListForm> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';
                   }
+
                   return null;
                 },
                 style: TextStyle(color: textColor), // Change the color of the input text
@@ -159,7 +160,7 @@ class CreateListFormState extends State<CreateListForm> {
               label: Text('Create'),
               style: ElevatedButton.styleFrom(
                 primary: primaryColor,
-                onPrimary: textColor
+                onPrimary: textColor,
               ),
               onPressed: () async {
                 // Validate returns true if the form is valid, or false otherwise.
@@ -200,7 +201,7 @@ class CreateListFormState extends State<CreateListForm> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => ViewList(list: newList)
+                      builder: (BuildContext context) => ViewList(list: newList),
                     ),
                     ModalRoute.withName('/'),
                   );

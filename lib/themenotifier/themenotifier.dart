@@ -39,11 +39,8 @@ void onThemeChanged(bool value, ThemeNotifier themeNotifier, ThemeData newTheme)
 /// 
 Color getPrimaryColor() {
   final String primaryColorString = Settings.getValue<String>('primary-color-picker', '');
-  if (primaryColorString != '') {
-    return HexColor.fromHex(primaryColorString); // Stored color
-  } else {
-    return Colors.blue; // Default color
-  }
+  
+  return primaryColorString != '' ? HexColor.fromHex(primaryColorString) : Colors.blue;
 }
 
 /// Returns a Color object.
@@ -55,11 +52,8 @@ Color getPrimaryColor() {
 /// 
 Color getTextColor() {
   final String textColorString = Settings.getValue<String>('text-color-picker', '');
-  if (textColorString != '') {
-    return HexColor.fromHex(textColorString); // Stored color
-  } else {
-    return Colors.black; // Default color
-  }
+
+  return textColorString != '' ? HexColor.fromHex(textColorString) : Colors.black;
 }
 
 /// Returns a Brightness object.
@@ -69,11 +63,7 @@ Color getTextColor() {
 /// e.g., Brightness.light
 /// 
 Brightness getBrightnessMode() {
-  if (Settings.getValue<bool>('dark-mode', false) == true) {
-    return Brightness.dark;
-  } else {
-    return Brightness.light; // Default
-  }
+  return Settings.getValue<bool>('dark-mode', false) ? Brightness.dark : Brightness.light;
 }
 
 /// Checks the theme settings and sends back an alert.
@@ -145,7 +135,7 @@ void runOnThemeChanged(_primaryColor, _textColor, _brightness, _themeNotifier) {
       accentColor: _primaryColor,
       accentIconTheme: IconThemeData(color: _primaryColor),
       iconTheme: IconThemeData(
-        color: _primaryColor
+        color: _primaryColor,
       ),
       dividerColor: _primaryColor,
       toggleableActiveColor: _primaryColor,
@@ -186,8 +176,8 @@ void runOnThemeChanged(_primaryColor, _textColor, _brightness, _themeNotifier) {
         bodyText2: TextStyle(
           color: _textColor,
         ),
-      )
-    )
+      ),
+    ),
   );
 }
 /// 

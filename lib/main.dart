@@ -132,7 +132,7 @@ void main() async {
             accentColor: primaryColor,
             accentIconTheme: IconThemeData(color: primaryColor),
             iconTheme: IconThemeData(
-              color: primaryColor
+              color: primaryColor,
             ),
             dividerColor: primaryColor,
             toggleableActiveColor: primaryColor,
@@ -174,7 +174,7 @@ void main() async {
                 color: textColor,
               ),
             ),
-          )
+          ),
         ),
         child: Root(),
       ),
@@ -202,6 +202,7 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    
     return MaterialApp(
       title: 'Todo Tada',
       theme: themeNotifier.getTheme(),
@@ -259,26 +260,26 @@ class _MainPageState extends State<MainPage> {
             ),
             Container (
               decoration: new BoxDecoration (
-                  color: Colors.grey
+                  color: Colors.grey,
               ),
               child: new ListTile (
                   leading: const Icon(Icons.list_alt),
-                  title: Text('All Lists')
-              )
+                  title: Text('All Lists'),
+              ),
             ),
             ListTile(
               leading: new Icon(Icons.today),
               title: const Text('Daily Lists'),
-              onTap: () {
+              // onTap: () {
 
-              },
+              // },
             ),
             ListTile(
               leading: new Icon(Icons.checklist),
               title: const Text('Check Lists'),
-              onTap: () {
+              // onTap: () {
 
-              },
+              // },
             ),
             ListTile(
               leading: new Icon(Icons.settings),
@@ -296,7 +297,7 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       appBar: AppBar(
-        title: Text(widget.title)
+        title: Text(widget.title),
       ),
       body: Center(
         child: GridView.count(
@@ -347,7 +348,7 @@ class _MainPageState extends State<MainPage> {
                     topRight: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0),
                     topLeft: Radius.circular(20.0),
-                    bottomLeft: Radius.circular(20.0)
+                    bottomLeft: Radius.circular(20.0),
                   ),
               ),
               // Handle the onTap with InkWell.
@@ -359,6 +360,7 @@ class _MainPageState extends State<MainPage> {
                 onTap: () {
                   viewList(lists[index]);
                 },
+                // Display list name, etc., in a Container.
                 child: Container(
                   height: 80,
                   width: 10,
@@ -367,11 +369,11 @@ class _MainPageState extends State<MainPage> {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.0
+                        fontSize: 16.0,
                       ),
-                    )
+                    ),
                   ),
-                )
+                ),
               ),
             ),
           );
