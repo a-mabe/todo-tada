@@ -15,12 +15,14 @@ import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todotada/createlist/createlist.dart';
 import 'package:todotada/listdata/todolist.dart';
+import 'package:todotada/viewlist/viewlist.dart';
 import 'settings/settings.dart';
 import 'themenotifier/themenotifier.dart';
 import 'createlist/createlist.dart';
 import 'database/databasemanager.dart';
 import 'listdata/todolist.dart';
 import 'listdata/todoitem.dart';
+import 'themenotifier/hexcolor.dart';
 
 
 ///
@@ -57,13 +59,19 @@ late int numberOfLists;
 /// 
 /// e.g., List<TodoLists>
 /// 
-late List<TodoList> lists;
+List<TodoList> lists = [];
 
 /// The List of TodoItems in the database.
 /// 
 /// e.g., List<TodoItems>
 /// 
 late List<TodoItem> items;
+
+/// The amount of padding around a grid block.
+/// 
+/// e.g., 8.0
+/// 
+final double gridPadding = 40.0;
 
 ///
 /// -------------
@@ -87,11 +95,6 @@ void main() async {
   lists = await DatabaseManager().lists(database);
   items = await DatabaseManager().items(database);
   numberOfLists = lists.length;
-
-
-  print(lists);
-  print(items);
-
 
   /// Run app once settings are initialized.
   /// 
@@ -118,19 +121,29 @@ void main() async {
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
-            primaryColor: primaryColor,
-            brightness: brightness,
-            backgroundColor: primaryColor,
-            accentColor: primaryColor,
-            accentIconTheme: IconThemeData(color: primaryColor),
-            iconTheme: IconThemeData(
-              color: primaryColor
+            colorScheme: ColorScheme(
+              primary: primaryColor,
+              onPrimary: primaryColor,
+              primaryVariant: primaryColor,
+              background: primaryColor,
+              onBackground: primaryColor,
+              secondary: primaryColor,
+              onSecondary: primaryColor,
+              secondaryVariant: primaryColor,
+              error: primaryColor,
+              onError: primaryColor,
+              surface: primaryColor,
+              onSurface: primaryColor,
+              brightness: brightness,
             ),
-            dividerColor: primaryColor,
-            toggleableActiveColor: primaryColor,
+            iconTheme: IconThemeData(
+              color: primaryColor,
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: primaryColor,
+            ),
             appBarTheme: AppBarTheme(
               backgroundColor: primaryColor,
-              backwardsCompatibility: false,
               iconTheme: IconThemeData(color: textColor), // This should be the same as titleTextStyle
               titleTextStyle: TextStyle(color: textColor), // This should be the same as iconTheme
             ),
@@ -166,7 +179,7 @@ void main() async {
                 color: textColor,
               ),
             ),
-          )
+          ),
         ),
         child: Root(),
       ),
@@ -194,6 +207,7 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    
     return MaterialApp(
       title: 'Todo Tada',
       theme: themeNotifier.getTheme(),
@@ -251,26 +265,26 @@ class _MainPageState extends State<MainPage> {
             ),
             Container (
               decoration: new BoxDecoration (
-                  color: Colors.grey
+                  color: Colors.grey,
               ),
               child: new ListTile (
                   leading: const Icon(Icons.list_alt),
-                  title: Text('All Lists')
-              )
+                  title: Text('All Lists'),
+              ),
             ),
             ListTile(
               leading: new Icon(Icons.today),
               title: const Text('Daily Lists'),
-              onTap: () {
+              // onTap: () {
 
-              },
+              // },
             ),
             ListTile(
               leading: new Icon(Icons.checklist),
               title: const Text('Check Lists'),
-              onTap: () {
+              // onTap: () {
 
-              },
+              // },
             ),
             ListTile(
               leading: new Icon(Icons.settings),
@@ -288,28 +302,86 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       appBar: AppBar(
-        title: Text(widget.title)
+        title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          ],
+        child: GridView.count(
+          // Create a grid with 2 columns.
+          crossAxisCount: 2,
+          // Generate the items in the grid from the stored lists.
+          children: List.generate(lists.length, (index) {
+            return createListBox(index);
+          }),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: createList,
-        tooltip: 'Increment',
+        tooltip: 'Create new list',
         child: Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1?.color),
       ),
     );
   }
 
+  /// Navigates to the CreateListForm route.
+  /// 
   void createList() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => CreateListForm()),
     );
+  }
+
+  /// Navigates to the ViewList route for the selected list.
+  /// 
+  void viewList(selectedList) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ViewList(list: selectedList)),
+    );
+  }
+
+  /// Constructs the grid box to display a list item.
+  /// 
+  Widget createListBox(index) {
+    return Padding( // Add padding.
+            padding: EdgeInsets.all(15.0),
+            // Create the Ink widget to set the border radius.
+            child: Ink(
+              decoration: BoxDecoration(
+                color: HexColor.fromHex(lists[index].listColor),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20.0),
+                    bottomRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(20.0),
+                    bottomLeft: Radius.circular(20.0),
+                  ),
+              ),
+              // Handle the onTap with InkWell.
+              child: InkWell(
+                splashColor: Colors.white,
+                customBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                ),
+                onTap: () {
+                  viewList(lists[index]);
+                },
+                // Display list name, etc., in a Container.
+                child: Container(
+                  height: 80,
+                  width: 10,
+                  child: Center(child: Text(
+                    lists[index].listName,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
   }
 
 }

@@ -39,11 +39,8 @@ void onThemeChanged(bool value, ThemeNotifier themeNotifier, ThemeData newTheme)
 /// 
 Color getPrimaryColor() {
   final String primaryColorString = Settings.getValue<String>('primary-color-picker', '');
-  if (primaryColorString != '') {
-    return HexColor.fromHex(primaryColorString); // Stored color
-  } else {
-    return Colors.blue; // Default color
-  }
+  
+  return primaryColorString != '' ? HexColor.fromHex(primaryColorString) : Colors.blue;
 }
 
 /// Returns a Color object.
@@ -55,11 +52,8 @@ Color getPrimaryColor() {
 /// 
 Color getTextColor() {
   final String textColorString = Settings.getValue<String>('text-color-picker', '');
-  if (textColorString != '') {
-    return HexColor.fromHex(textColorString); // Stored color
-  } else {
-    return Colors.black; // Default color
-  }
+
+  return textColorString != '' ? HexColor.fromHex(textColorString) : Colors.black;
 }
 
 /// Returns a Brightness object.
@@ -69,11 +63,7 @@ Color getTextColor() {
 /// e.g., Brightness.light
 /// 
 Brightness getBrightnessMode() {
-  if (Settings.getValue<bool>('dark-mode', false) == true) {
-    return Brightness.dark;
-  } else {
-    return Brightness.light; // Default
-  }
+  return Settings.getValue<bool>('dark-mode', false) ? Brightness.dark : Brightness.light;
 }
 
 /// Checks the theme settings and sends back an alert.
@@ -139,55 +129,65 @@ class ThemeNotifier with ChangeNotifier {
 
 void runOnThemeChanged(_primaryColor, _textColor, _brightness, _themeNotifier) {
   onThemeChanged(false, _themeNotifier, ThemeData(
-      primaryColor: _primaryColor,
-      brightness: _brightness,
-      backgroundColor: _primaryColor,
-      accentColor: _primaryColor,
-      accentIconTheme: IconThemeData(color: _primaryColor),
-      iconTheme: IconThemeData(
-        color: _primaryColor
-      ),
-      dividerColor: _primaryColor,
-      toggleableActiveColor: _primaryColor,
-      appBarTheme: AppBarTheme(
-        backgroundColor: _primaryColor, // This should match the primary color
-        backwardsCompatibility: false,
-        iconTheme: IconThemeData(color: _textColor), // This should be the same as titleTextStyle
-        titleTextStyle: TextStyle(color: _textColor), // This should be the same as iconTheme
-      ),
-      textTheme: TextTheme(
-        headline1: TextStyle(
-          color: _textColor,
-        ),
-        headline2: TextStyle(
-          color: _textColor,
-        ),
-        headline3: TextStyle(
-          color: _textColor,
-        ),
-        headline4: TextStyle(
-          color: _textColor,
-        ),
-        headline5: TextStyle(
-          color: _textColor,
-        ),
-        headline6: TextStyle(
-          color: _textColor,
-        ),
-        subtitle1: TextStyle(
-          color: _textColor,
-        ),
-        subtitle2: TextStyle(
-          color: _textColor,
-        ),
-        bodyText1: TextStyle(
-          color: _textColor,
-        ),
-        bodyText2: TextStyle(
-          color: _textColor,
-        ),
-      )
-    )
+            colorScheme: ColorScheme(
+              primary: _primaryColor,
+              onPrimary: _primaryColor,
+              primaryVariant: _primaryColor,
+              background: _primaryColor,
+              onBackground: _primaryColor,
+              secondary: _primaryColor,
+              onSecondary: _primaryColor,
+              secondaryVariant: _primaryColor,
+              error: _primaryColor,
+              onError: _primaryColor,
+              surface: _primaryColor,
+              onSurface: _primaryColor,
+              brightness: _brightness,
+            ),
+            iconTheme: IconThemeData(
+              color: _primaryColor,
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: _primaryColor,
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: _primaryColor,
+              iconTheme: IconThemeData(color: _textColor), // This should be the same as titleTextStyle
+              titleTextStyle: TextStyle(color: _textColor), // This should be the same as iconTheme
+            ),
+            textTheme: TextTheme(
+              headline1: TextStyle(
+                color: _textColor,
+              ),
+              headline2: TextStyle(
+                color: _textColor,
+              ),
+              headline3: TextStyle(
+                color: _textColor,
+              ),
+              headline4: TextStyle(
+                color: _textColor,
+              ),
+              headline5: TextStyle(
+                color: _textColor,
+              ),
+              headline6: TextStyle(
+                color: _textColor,
+              ),
+              subtitle1: TextStyle(
+                color: _textColor,
+              ),
+              subtitle2: TextStyle(
+                color: _textColor,
+              ),
+              bodyText1: TextStyle(
+                color: _textColor,
+              ),
+              bodyText2: TextStyle(
+                color: _textColor,
+              ),
+            ),
+          ),
   );
 }
 /// 

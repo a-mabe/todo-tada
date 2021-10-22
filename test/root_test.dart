@@ -32,19 +32,29 @@ final Color textColor = Colors.black;
 
 Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
-            primaryColor: primaryColor,
-            brightness: Brightness.light,
-            backgroundColor: primaryColor,
-            accentColor: primaryColor,
-            accentIconTheme: IconThemeData(color: primaryColor),
-            iconTheme: IconThemeData(
-              color: Colors.pink
+            colorScheme: ColorScheme(
+              primary: primaryColor,
+              onPrimary: primaryColor,
+              primaryVariant: primaryColor,
+              background: primaryColor,
+              onBackground: primaryColor,
+              secondary: primaryColor,
+              onSecondary: primaryColor,
+              secondaryVariant: primaryColor,
+              error: primaryColor,
+              onError: primaryColor,
+              surface: primaryColor,
+              onSurface: primaryColor,
+              brightness: Brightness.light,
             ),
-            dividerColor: primaryColor,
-            toggleableActiveColor: primaryColor,
+            iconTheme: IconThemeData(
+              color: primaryColor,
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: primaryColor,
+            ),
             appBarTheme: AppBarTheme(
               backgroundColor: primaryColor,
-              backwardsCompatibility: false,
               iconTheme: IconThemeData(color: textColor), // This should be the same as titleTextStyle
               titleTextStyle: TextStyle(color: textColor), // This should be the same as iconTheme
             ),
@@ -80,7 +90,7 @@ Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
                 color: textColor,
               ),
             ),
-          )
+          ),
         ),
         child: Root(),
       );

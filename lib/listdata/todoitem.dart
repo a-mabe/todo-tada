@@ -83,7 +83,7 @@ class TodoItem {
     required this.icon,
     required this.status,
     required this.id,
-    required this.listId
+    required this.listId,
   });
 
   /// 
@@ -105,7 +105,7 @@ class TodoItem {
       'icon': icon,
       'status': status,
       'id': id,
-      'listId': listId
+      'listId': listId,
     };
   }
 
