@@ -129,55 +129,65 @@ class ThemeNotifier with ChangeNotifier {
 
 void runOnThemeChanged(_primaryColor, _textColor, _brightness, _themeNotifier) {
   onThemeChanged(false, _themeNotifier, ThemeData(
-      primaryColor: _primaryColor,
-      brightness: _brightness,
-      backgroundColor: _primaryColor,
-      accentColor: _primaryColor,
-      accentIconTheme: IconThemeData(color: _primaryColor),
-      iconTheme: IconThemeData(
-        color: _primaryColor,
-      ),
-      dividerColor: _primaryColor,
-      toggleableActiveColor: _primaryColor,
-      appBarTheme: AppBarTheme(
-        backgroundColor: _primaryColor, // This should match the primary color
-        backwardsCompatibility: false,
-        iconTheme: IconThemeData(color: _textColor), // This should be the same as titleTextStyle
-        titleTextStyle: TextStyle(color: _textColor), // This should be the same as iconTheme
-      ),
-      textTheme: TextTheme(
-        headline1: TextStyle(
-          color: _textColor,
-        ),
-        headline2: TextStyle(
-          color: _textColor,
-        ),
-        headline3: TextStyle(
-          color: _textColor,
-        ),
-        headline4: TextStyle(
-          color: _textColor,
-        ),
-        headline5: TextStyle(
-          color: _textColor,
-        ),
-        headline6: TextStyle(
-          color: _textColor,
-        ),
-        subtitle1: TextStyle(
-          color: _textColor,
-        ),
-        subtitle2: TextStyle(
-          color: _textColor,
-        ),
-        bodyText1: TextStyle(
-          color: _textColor,
-        ),
-        bodyText2: TextStyle(
-          color: _textColor,
-        ),
-      ),
-    ),
+            colorScheme: ColorScheme(
+              primary: _primaryColor,
+              onPrimary: _primaryColor,
+              primaryVariant: _primaryColor,
+              background: _primaryColor,
+              onBackground: _primaryColor,
+              secondary: _primaryColor,
+              onSecondary: _primaryColor,
+              secondaryVariant: _primaryColor,
+              error: _primaryColor,
+              onError: _primaryColor,
+              surface: _primaryColor,
+              onSurface: _primaryColor,
+              brightness: _brightness,
+            ),
+            iconTheme: IconThemeData(
+              color: _primaryColor,
+            ),
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: _primaryColor,
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: _primaryColor,
+              iconTheme: IconThemeData(color: _textColor), // This should be the same as titleTextStyle
+              titleTextStyle: TextStyle(color: _textColor), // This should be the same as iconTheme
+            ),
+            textTheme: TextTheme(
+              headline1: TextStyle(
+                color: _textColor,
+              ),
+              headline2: TextStyle(
+                color: _textColor,
+              ),
+              headline3: TextStyle(
+                color: _textColor,
+              ),
+              headline4: TextStyle(
+                color: _textColor,
+              ),
+              headline5: TextStyle(
+                color: _textColor,
+              ),
+              headline6: TextStyle(
+                color: _textColor,
+              ),
+              subtitle1: TextStyle(
+                color: _textColor,
+              ),
+              subtitle2: TextStyle(
+                color: _textColor,
+              ),
+              bodyText1: TextStyle(
+                color: _textColor,
+              ),
+              bodyText2: TextStyle(
+                color: _textColor,
+              ),
+            ),
+          ),
   );
 }
 /// 

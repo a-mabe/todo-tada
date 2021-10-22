@@ -96,11 +96,6 @@ void main() async {
   items = await DatabaseManager().items(database);
   numberOfLists = lists.length;
 
-
-  print(lists);
-  print(items);
-
-
   /// Run app once settings are initialized.
   /// 
   initSettings().then((_) {
@@ -126,19 +121,29 @@ void main() async {
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
-            primaryColor: primaryColor,
-            brightness: brightness,
-            backgroundColor: primaryColor,
-            accentColor: primaryColor,
-            accentIconTheme: IconThemeData(color: primaryColor),
+            colorScheme: ColorScheme(
+              primary: primaryColor,
+              onPrimary: primaryColor,
+              primaryVariant: primaryColor,
+              background: primaryColor,
+              onBackground: primaryColor,
+              secondary: primaryColor,
+              onSecondary: primaryColor,
+              secondaryVariant: primaryColor,
+              error: primaryColor,
+              onError: primaryColor,
+              surface: primaryColor,
+              onSurface: primaryColor,
+              brightness: brightness,
+            ),
             iconTheme: IconThemeData(
               color: primaryColor,
             ),
-            dividerColor: primaryColor,
-            toggleableActiveColor: primaryColor,
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+              foregroundColor: primaryColor,
+            ),
             appBarTheme: AppBarTheme(
               backgroundColor: primaryColor,
-              backwardsCompatibility: false,
               iconTheme: IconThemeData(color: textColor), // This should be the same as titleTextStyle
               titleTextStyle: TextStyle(color: textColor), // This should be the same as iconTheme
             ),

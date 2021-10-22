@@ -95,7 +95,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
         title: 'Application Settings',
         children: [
           SettingsGroup(
-            title: 'Theme Settings',
+            title: '',
             children: <Widget>[
               
               /// Brightness Selector
