@@ -59,7 +59,7 @@ late int numberOfLists;
 /// 
 /// e.g., List<TodoLists>
 /// 
-late List<TodoList> lists;
+List<TodoList> lists = [];
 
 /// The List of TodoItems in the database.
 /// 

@@ -45,7 +45,7 @@ Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
               onError: primaryColor,
               surface: primaryColor,
               onSurface: primaryColor,
-              brightness: brightness,
+              brightness: Brightness.light,
             ),
             iconTheme: IconThemeData(
               color: primaryColor,
