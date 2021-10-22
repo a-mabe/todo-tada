@@ -1,4 +1,4 @@
-name: Dart Code Metrics
+name: Dart_Code_Metrics
 
 on:
   pull_request:
