@@ -429,6 +429,11 @@ class _MainPageState extends State<MainPage> {
               borderRadius: BorderRadius.circular(20),
           ),
           onTap: () {
+
+            // var subset = items.where((item) => item.listId == lists[index].id);
+
+            // print(subset.length);
+
             viewList(lists[index]);
           },
           /// Display list name, color, etc., in a Container.

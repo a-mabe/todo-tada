@@ -9,11 +9,12 @@
 /// 
 
 import 'package:flutter/material.dart';
-import '../themenotifier/themenotifier.dart';
+import 'package:todotada/viewlist/additem.dart';
 import '../listdata/todolist.dart';
+import 'additem.dart';
 
-// Define a custom Form widget.
-//
+/// Define a custom Form widget.
+///
 class ViewList extends StatefulWidget {
 
   /// The list to view.
@@ -28,9 +29,9 @@ class ViewList extends StatefulWidget {
   }
 }
 
-// Define a corresponding State class.
-// This class holds data related to the form.
-//
+/// Define a corresponding State class.
+/// This class holds data related to the form.
+///
 class ViewListState extends State<ViewList> {
 
   ViewListState({required this.list});
@@ -41,12 +42,36 @@ class ViewListState extends State<ViewList> {
 
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
-    //
+    /// Build a Form widget using the _formKey created above.
+    ///
     return new Scaffold(
       appBar: AppBar(
         title: Text(list.listName),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                addItem();
+              },
+              child: Icon(
+                Icons.add,
+                size: 26.0,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
+  /// Navigates to the AddItem route.
+  /// 
+  void addItem() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddItem()),
+    );
+  }
+
 }
