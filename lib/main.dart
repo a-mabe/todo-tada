@@ -25,61 +25,6 @@ import 'listdata/todoitem.dart';
 import 'themenotifier/hexcolor.dart';
 
 
-///
-/// ---------
-/// FIELDS
-/// ---------
-///
-
-/// The primary theme color.
-/// 
-/// e.g., Colors.blue
-/// 
-late final Color primaryColor;
-
-/// The main text color.
-/// 
-/// e.g., Colors.blue
-/// 
-late final Color textColor;
-
-/// The theme brightness.
-/// 
-/// e.g., Brightness.light (light theme)
-/// 
-late final Brightness brightness;
-
-/// The number of lists in the database.
-/// 
-/// e.g., 3
-/// 
-late int numberOfLists;
-
-/// The List of TodoLists in the database.
-/// 
-/// e.g., List<TodoLists>
-/// 
-List<TodoList> lists = [];
-
-/// The List of TodoItems in the database.
-/// 
-/// e.g., List<TodoItems>
-/// 
-late List<TodoItem> items;
-
-/// The amount of padding around a grid block.
-/// 
-/// e.g., 8.0
-/// 
-final double gridPadding = 40.0;
-
-///
-/// -------------
-/// END FIELDS
-/// -------------
-///
-
-
 /// Start the root of the app.
 /// 
 /// Initiates the root ThemeNotifier so the user may dynamically
@@ -92,9 +37,8 @@ void main() async {
 
   Future<Database> database = DatabaseManager().open();
 
-  lists = await DatabaseManager().lists(database);
-  items = await DatabaseManager().items(database);
-  numberOfLists = lists.length;
+  List<TodoList> lists = await DatabaseManager().lists(database);
+  List<TodoItem> items = await DatabaseManager().items(database);
 
   /// Run app once settings are initialized.
   /// 
@@ -181,7 +125,13 @@ void main() async {
             ),
           ),
         ),
-        child: Root(),
+        child: Root(
+          primaryColor,
+          textColor,
+          brightness,
+          lists,
+          items,
+        ),
       ),
     );
   });
@@ -202,6 +152,57 @@ Future<void> initSettings() async {
 /// 
 class Root extends StatelessWidget {
 
+  Root(
+    this.primaryColor, 
+    this.textColor,
+    this.brightness,
+    this.lists,
+    this.items,
+  );
+
+  ///
+  /// ---------
+  /// FIELDS
+  /// ---------
+  ///
+
+  /// The primary theme color.
+  /// 
+  /// e.g., Colors.blue
+  /// 
+  final Color primaryColor;
+
+  /// The main text color.
+  /// 
+  /// e.g., Colors.blue
+  /// 
+  final Color textColor;
+
+  /// The theme brightness.
+  /// 
+  /// e.g., Brightness.light (light theme)
+  /// 
+  final Brightness brightness;
+
+  /// The List of TodoLists in the database.
+  /// 
+  /// e.g., List<TodoLists>
+  /// 
+  final List<TodoList> lists;
+
+  /// The List of TodoItems in the database.
+  /// 
+  /// e.g., List<TodoItems>
+  /// 
+  final List<TodoItem> items;
+
+  ///
+  /// -------------
+  /// END FIELDS
+  /// -------------
+  ///
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -211,7 +212,11 @@ class Root extends StatelessWidget {
     return MaterialApp(
       title: 'Todo Tada',
       theme: themeNotifier.getTheme(),
-      home: MainPage(title: 'All Lists'),
+      home: MainPage(
+        title: 'All Lists',
+        lists: lists,
+        items: items,
+      ),
     );
   }
 }
@@ -228,19 +233,79 @@ class Root extends StatelessWidget {
 /// -------------
 /// 
 class MainPage extends StatefulWidget {
-  MainPage({Key? key, required this.title}) : super(key: key);
 
+  MainPage({
+    Key? key, 
+    required this.title,
+    required this.lists,
+    required this.items,
+  }) : super(key: key);
+
+
+  ///
+  /// ---------
+  /// FIELDS
+  /// ---------
+  ///
+  
   /// Title of the app.
   /// 
   /// e.g., "To-do, Tada"
   /// 
   final String title;
 
+  /// The List of TodoLists in the database.
+  /// 
+  /// e.g., List<TodoLists>
+  /// 
+  final List<TodoList> lists;
+
+  /// The List of TodoItems in the database.
+  /// 
+  /// e.g., List<TodoItems>
+  /// 
+  final List<TodoItem> items;
+
+  ///
+  /// -------------
+  /// END FIELDS
+  /// -------------
+  ///
+
   @override
-  _MainPageState createState() => _MainPageState();
+  _MainPageState createState() => _MainPageState(
+    lists,
+    items,
+  );
 }
 
 class _MainPageState extends State<MainPage> {
+
+  _MainPageState(this.lists, this.items);
+
+  ///
+  /// ---------
+  /// FIELDS
+  /// ---------
+  ///
+
+  /// The List of TodoLists in the database.
+  /// 
+  /// e.g., List<TodoLists>
+  /// 
+  final List<TodoList> lists;
+
+  /// The List of TodoItems in the database.
+  /// 
+  /// e.g., List<TodoItems>
+  /// 
+  final List<TodoItem> items;
+
+  ///
+  /// -------------
+  /// END FIELDS
+  /// -------------
+  ///
 
   @override
   Widget build(BuildContext context) {
@@ -314,6 +379,8 @@ class _MainPageState extends State<MainPage> {
           }),
         ),
       ),
+      /// Button to create a new list.
+      /// 
       floatingActionButton: FloatingActionButton(
         onPressed: createList,
         tooltip: 'Create new list',
@@ -343,45 +410,47 @@ class _MainPageState extends State<MainPage> {
   /// Constructs the grid box to display a list item.
   /// 
   Widget createListBox(index) {
-    return Padding( // Add padding.
-            padding: EdgeInsets.all(15.0),
-            // Create the Ink widget to set the border radius.
-            child: Ink(
-              decoration: BoxDecoration(
-                color: HexColor.fromHex(lists[index].listColor),
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0),
-                    topLeft: Radius.circular(20.0),
-                    bottomLeft: Radius.circular(20.0),
-                  ),
-              ),
-              // Handle the onTap with InkWell.
-              child: InkWell(
-                splashColor: Colors.white,
-                customBorder: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                ),
-                onTap: () {
-                  viewList(lists[index]);
-                },
-                // Display list name, etc., in a Container.
-                child: Container(
-                  height: 80,
-                  width: 10,
-                  child: Center(child: Text(
-                    lists[index].listName,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
+    return Padding( 
+      /// Add padding around each grid box.
+      /// 
+      padding: EdgeInsets.all(15.0),
+      /// Create the Ink widget to set the border radius.
+      /// 
+      child: Ink(
+        decoration: BoxDecoration(
+          color: HexColor.fromHex(lists[index].listColor),
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        /// Handle the onTap with InkWell.
+        /// 
+        child: InkWell(
+          splashColor: Colors.white,
+          customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+          ),
+          onTap: () {
+            viewList(lists[index]);
+          },
+          /// Display list name, color, etc., in a Container.
+          /// 
+          child: Container(
+            height: 80,
+            width: 10,
+            child: Center(child: Text(
+              lists[index].listName,
+              /// For now hardcode the textstyle.
+              /// 
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
                 ),
               ),
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 
 }

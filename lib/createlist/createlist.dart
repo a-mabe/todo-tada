@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todotada/main.dart';
 import 'package:todotada/viewlist/viewlist.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:uuid/uuid.dart';
@@ -191,8 +190,6 @@ class CreateListFormState extends State<CreateListForm> {
                   /// Insert the list into the database.
                   /// 
                   await DatabaseManager().insertList(newList, database);
-
-                  print(lists);
 
                   /// Navigate to the ViewList route for the created list and clear
                   /// the CreateList route from the stack so that the user goes 

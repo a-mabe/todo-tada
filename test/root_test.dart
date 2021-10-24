@@ -11,9 +11,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todotada/listdata/todoitem.dart';
+import 'package:todotada/listdata/todolist.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:todotada/themenotifier/themenotifier.dart';
 import 'package:todotada/main.dart';
+import 'package:todotada/database/databasemanager.dart';
+import 'package:todotada/themenotifier/hexcolor.dart';
 
 ///
 /// ---------
@@ -30,7 +36,10 @@ final Color textColor = Colors.black;
 /// -------------
 ///
 
-Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
+Widget createRoot(
+    List<TodoList> lists,
+    List<TodoItem> items,
+  ) => ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
             colorScheme: ColorScheme(
               primary: primaryColor,
@@ -92,38 +101,174 @@ Widget createRoot() => ChangeNotifierProvider<ThemeNotifier>(
             ),
           ),
         ),
-        child: Root(),
+        child: Root(
+          primaryColor, 
+          textColor,
+          Brightness.light,
+          lists,
+          items,
+        ),
       );
 
 void main() {
-  group('Root Page Widget Test', () {
-    testWidgets('Testing Root Page Load', (tester) async {
-      // Create root page
-      await tester.pumpWidget(createRoot());
+  group('Root Page Widget Test:', () {
+    testWidgets('Testing Root Page Load and Empty Lists', (tester) async {
 
-      // Find the title
+      List<TodoList> lists = [];
+      List<TodoItem> items = [];
+
+      // Create root page.
+      await tester.pumpWidget(createRoot(
+        lists,
+        items,
+      ));
+
+      // Find the title.
       expect(find.text('All Lists'), findsOneWidget);
 
-      // Find the Add List floating action button
+      // Find the Add List floating action button.
       expect(find.widgetWithIcon(FloatingActionButton, Icons.add), findsOneWidget);
 
-      // Find the menu button
+      // Find the menu button.
       expect(find.byIcon(Icons.menu), findsOneWidget);
     });
 
-    testWidgets('Testing Menu Drawer Opening on Root Page', (tester) async {
-      // Create root page
-      await tester.pumpWidget(createRoot());
+    testWidgets('Testing Menu Drawer Opening on Root Page and Empty Lists', (tester) async {
 
-      // Open the drawer
+      List<TodoList> lists = [];
+      List<TodoItem> items = [];
+
+      // Create root page.
+      await tester.pumpWidget(createRoot(
+        lists,
+        items,
+      ));
+
+      // Open the drawer.
       final ScaffoldState state = tester.firstState(find.byType(Scaffold));
       state.openDrawer();
 
-      // Wait for the drawer to open
+      // Wait for the drawer to open.
       await tester.pumpAndSettle();
 
-      // Check that the drawer is open
+      // Check that the drawer is open.
       expect(find.text('To-do, Tada'), findsOneWidget);
+    });
+
+    testWidgets('Root Page Displaying One List in the Grid', (tester) async {
+
+      TodoList list_one = TodoList(
+        listName: "Test List 1",
+        listColor: Colors.orange.toHex(),
+        listType: "regular",
+        creationDate: DateTime.now().toString(),
+        lastUpdated: DateTime.now().toString(),
+        id: Uuid().v1(),
+      );
+
+      List<TodoList> lists = [list_one];
+      List<TodoItem> items = [];
+
+      // Create root page.
+      await tester.pumpWidget(createRoot(
+        lists,
+        items,
+      ));
+
+      // Title of the list should be shown in the grid.
+      expect(find.text('Test List 1'), findsOneWidget);
+
+      // Should be 2 Inkwells, one is for the list, other is for the FAB.
+      expect(find.byType(InkWell), findsWidgets);
+    });
+
+    testWidgets('Root Page Displaying Multiple Lists in the Grid', (tester) async {
+
+      TodoList list_one = TodoList(
+        listName: "Test List 1",
+        listColor: Colors.orange.toHex(),
+        listType: "regular",
+        creationDate: DateTime.now().toString(),
+        lastUpdated: DateTime.now().toString(),
+        id: Uuid().v1(),
+      );
+
+      TodoList list_two = TodoList(
+        listName: "Test List 2",
+        listColor: Colors.orange.toHex(),
+        listType: "regular",
+        creationDate: DateTime.now().toString(),
+        lastUpdated: DateTime.now().toString(),
+        id: Uuid().v1(),
+      );
+
+      TodoList list_three = TodoList(
+        listName: "Test List 3",
+        listColor: Colors.orange.toHex(),
+        listType: "regular",
+        creationDate: DateTime.now().toString(),
+        lastUpdated: DateTime.now().toString(),
+        id: Uuid().v1(),
+      );
+
+      List<TodoList> lists = [list_one, list_two, list_three];
+      List<TodoItem> items = [];
+
+      // Create root page.
+      await tester.pumpWidget(createRoot(
+        lists,
+        items,
+      ));
+
+      // Title of each list should be displayed in the grid.
+      expect(find.text('Test List 1'), findsOneWidget);
+      expect(find.text('Test List 2'), findsOneWidget);
+      expect(find.text('Test List 3'), findsOneWidget);
+
+      // Should be 4 Inkwells, 3 for the lists, other is for the FAB.
+      expect(find.byType(InkWell), findsWidgets);
+    });
+
+    testWidgets('Root Page Allow Tap to View List', (tester) async {
+
+      TodoList list_one = TodoList(
+        listName: "Test List 1",
+        listColor: Colors.orange.toHex(),
+        listType: "regular",
+        creationDate: DateTime.now().toString(),
+        lastUpdated: DateTime.now().toString(),
+        id: Uuid().v1(),
+      );
+
+      List<TodoList> lists = [list_one];
+      List<TodoItem> items = [];
+
+      // Create root page.
+      await tester.pumpWidget(createRoot(
+        lists,
+        items,
+      ));
+
+      // Title of the list should be shown in the grid.
+      expect(find.text('Test List 1'), findsOneWidget);
+
+      // Should be 2 Inkwells, one is for the list, other is for the FAB.
+      expect(find.byType(InkWell), findsWidgets);
+
+      // Tap on the list to view it.
+      await tester.tap(find.byType(InkWell).first);
+
+      // Wait for the View List route to load.
+      await tester.pumpAndSettle();
+
+      // Should be moved off of the Root Page.
+      expect(find.text('All Lists'), findsNothing);
+
+      // Expect to find the list title on the AppBar.
+      find.ancestor(of: find.byType(AppBar), matching: find.text("Test List 1"));
+
+      // Should no longer be an Inkwell for the list.
+      expect(find.byType(InkWell), findsNothing);
     });
 
   });

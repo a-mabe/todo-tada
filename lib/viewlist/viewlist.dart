@@ -39,18 +39,6 @@ class ViewListState extends State<ViewList> {
   /// 
   final TodoList list;
 
-  /// Grab the primary color string.
-  /// 
-  /// e.g, "4287f5"
-  /// 
-  final Color primaryColor = getPrimaryColor();
-
-  /// Grab the text color string.
-  /// 
-  /// e.g, "4287f5"
-  /// 
-  final Color textColor = getTextColor();
-
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
