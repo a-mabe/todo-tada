@@ -8,7 +8,7 @@
   <a href="https://github.com/a-mabe/todo-tada/blob/master/.github/workflows/tests.yml">
     <img alt="Tests" src="https://img.shields.io/github/workflow/status/a-mabe/todo-tada/Flutter_Tests?label=tests&logo=github&color=brightgreen&style=flat-square">
   </a>
-  <a href="https://github.com/a-mabe/todo-tada/blob/master/.github/workflows/dartcodemetrics.yml">
+  <a href="https://github.com/a-mabe/todo-tada/blob/master/.github/workflows/dartcodemetrics.yaml">
     <img alt="Metrics" src="https://img.shields.io/github/workflow/status/a-mabe/todo-tada/Dart_Code_Metrics?label=metrics&color=brightgreen&style=flat-square">
   </a>
   <a href="https://github.com/a-mabe/todo-tada/wiki/v-1.0.0-b0">
@@ -16,6 +16,12 @@
   </a>
   <a href="https://opensource.org/licenses/BSD-3-Clause">
     <img alt="BSD 3-clause" src="https://img.shields.io/github/license/a-mabe/todo-tada?color=blue&style=flat-square">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://twitter.com/intent/tweet?text=I%20found%20a%20cool%20Flutter%20app%20by%20%40abigail_mabe%20at%20https%3A%2F%2Fgithub.com%2Fa-mabe%2Ftodo-tada">
+    <img alt="Tweet" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fa-mabe%2Ftodo-tada">
   </a>
 </p>
 
