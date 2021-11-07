@@ -407,7 +407,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  /// Constructs the grid box to display a list item.
+  /// Constructs the grid box to display a list.
   /// 
   Widget createListBox(index) {
     return Padding( 

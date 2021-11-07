@@ -8,6 +8,8 @@
 /// Route that shows the selected to-do list.
 /// 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:todotada/viewlist/additem.dart';
 import '../listdata/todolist.dart';
@@ -65,12 +67,33 @@ class ViewListState extends State<ViewList> {
     );
   }
 
+  /// Adapted from https://stackoverflow.com/a/66434157
+  /// 
+  Future<List> fetchIconList() async {
+    // Load as String.
+    final manifestContent =
+        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+
+    // Decode to Map
+    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+
+    // Filter by path.
+    final filtered = manifestMap.keys
+        .where((path) => path.startsWith('assets/icons/'))
+        .toList();
+    
+    return filtered;
+  }
+
   /// Navigates to the AddItem route.
   /// 
-  void addItem() {
+  void addItem() async {
+
+    List images = await fetchIconList();
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddItem()),
+      MaterialPageRoute(builder: (context) => AddItem(images: images,)),
     );
   }
 
