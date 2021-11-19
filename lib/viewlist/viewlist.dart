@@ -36,11 +36,11 @@ class ViewList extends StatefulWidget {
 ///
 class ViewListState extends State<ViewList> {
 
-  ViewListState({required this.list});
-
   /// The list to view.
   /// 
   final TodoList list;
+
+  ViewListState({required this.list});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class ViewListState extends State<ViewList> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddItem(images: images,)),
+      MaterialPageRoute(builder: (context) => AddItem(images: images, list: widget.list)),
     );
   }
 

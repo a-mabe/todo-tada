@@ -9,15 +9,20 @@
 /// 
 
 import 'package:flutter/material.dart';
-import 'dart:convert';
-
 import 'package:todotada/viewlist/edititem.dart';
+import '../listdata/todolist.dart';
 
 class AddItem extends StatefulWidget {
 
+  /// The list of icons.
+  /// 
   final List images;
 
-  AddItem({Key? key, required this.images}) : super(key: key);
+  /// The list to view.
+  /// 
+  final TodoList list;
+
+  AddItem({Key? key, required this.images, required this.list}) : super(key: key);
 
   @override
   AddItemState createState() {
@@ -37,23 +42,17 @@ class AddItemState extends State<AddItem> {
       ),
       body: Center(
         child: GridView.count(
-          // Create a grid with 2 columns.
+          /// Create a grid with 2 columns.
+          /// 
           crossAxisCount: 4,
-          // Generate the items in the grid from the stored lists.
+          /// Generate the items in the grid from the stored lists.
+          /// 
           children: List.generate(widget.images.length, (index) {
             return Center(
               child: createListBox(index, widget.images),
             );
           }),
         ),
-        // child: GridView.count(
-        //   // Create a grid with 2 columns.
-        //   crossAxisCount: 2,
-        //   // Generate the items in the grid from the stored lists.
-        //   children: List.generate(lists.length, (index) {
-        //     return createListBox(index);
-        //   }),
-        // ),
       ),
     );
   }
@@ -77,19 +76,10 @@ class AddItemState extends State<AddItem> {
               borderRadius: BorderRadius.circular(20),
           ),
           onTap: () {
-
-            // var subset = items.where((item) => item.listId == lists[index].id);
-
-            // print(subset.length);
-
-            // viewList(lists[index]);
-
-            debugPrint("Icon Tap");
-
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => EditItem(),
+                  builder: (BuildContext context) => EditItem(icon: images[index], list: widget.list),
                 ),
                 ModalRoute.withName('/'),
               );
@@ -103,59 +93,5 @@ class AddItemState extends State<AddItem> {
         ),
       ),
     );
-
-    // return Padding(
-    //   padding: EdgeInsets.all(15.0),
-    //   child: Image(
-    //       image: AssetImage(images[index],
-    //     ),
-    //   ),
-    // );
-    // return Padding( 
-    //   /// Add padding around each grid box.
-    //   /// 
-    //   padding: EdgeInsets.all(15.0),
-    //   /// Create the Ink widget to set the border radius.
-    //   /// 
-    //   child: Ink(
-    //     decoration: BoxDecoration(
-    //       color: HexColor.fromHex(lists[index].listColor),
-    //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-    //     ),
-    //     /// Handle the onTap with InkWell.
-    //     /// 
-    //     child: InkWell(
-    //       splashColor: Colors.white,
-    //       customBorder: RoundedRectangleBorder(
-    //           borderRadius: BorderRadius.circular(20),
-    //       ),
-    //       onTap: () {
-
-    //         // var subset = items.where((item) => item.listId == lists[index].id);
-
-    //         // print(subset.length);
-
-    //         viewList(lists[index]);
-    //       },
-    //       /// Display list name, color, etc., in a Container.
-    //       /// 
-    //       child: Container(
-    //         height: 80,
-    //         width: 10,
-    //         child: Center(child: Text(
-    //           lists[index].listName,
-    //           /// For now hardcode the textstyle.
-    //           /// 
-    //           style: TextStyle(
-    //               color: Colors.white,
-    //               fontWeight: FontWeight.bold,
-    //               fontSize: 16.0,
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
