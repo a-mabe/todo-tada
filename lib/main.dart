@@ -293,13 +293,13 @@ class _MainPageState extends State<MainPage> {
   /// 
   /// e.g., List<TodoLists>
   /// 
-  final List<TodoList> lists;
+  List<TodoList> lists;
 
   /// The List of TodoItems in the database.
   /// 
   /// e.g., List<TodoItems>
   /// 
-  final List<TodoItem> items;
+  List<TodoItem> items;
 
   ///
   /// -------------
@@ -389,13 +389,22 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  Future loadData() async {
+    Future<Database> database = DatabaseManager().open();
+
+    lists = await DatabaseManager().lists(database);
+    items = await DatabaseManager().items(database);
+  }
+
   /// Navigates to the CreateListForm route.
   /// 
   void createList() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => CreateListForm()),
-    );
+    ).then((_) => setState(() {
+        loadData();
+    }));
   }
 
   /// Navigates to the ViewList route for the selected list.
@@ -404,7 +413,9 @@ class _MainPageState extends State<MainPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ViewList(list: selectedList)),
-    );
+    ).then((_) => setState(() {
+        loadData();
+    }));
   }
 
   /// Constructs the grid box to display a list.
@@ -429,9 +440,10 @@ class _MainPageState extends State<MainPage> {
               borderRadius: BorderRadius.circular(20),
           ),
           onTap: () {
+            var subset = items.where((item) => item.listId == lists[index].id);
 
-            // var subset = items.where((item) => item.listId == lists[index].id);
-
+            // print("Items");
+            // print(items);
             // print(subset.length);
 
             viewList(lists[index]);
