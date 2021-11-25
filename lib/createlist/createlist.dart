@@ -10,7 +10,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todotada/viewlist/viewlist.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:uuid/uuid.dart';
 

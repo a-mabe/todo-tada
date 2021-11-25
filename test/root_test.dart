@@ -11,14 +11,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:todotada/listdata/todoitem.dart';
 import 'package:todotada/listdata/todolist.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:todotada/themenotifier/themenotifier.dart';
 import 'package:todotada/main.dart';
-import 'package:todotada/database/databasemanager.dart';
 import 'package:todotada/themenotifier/hexcolor.dart';
 
 ///
