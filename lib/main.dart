@@ -202,7 +202,6 @@ class Root extends StatelessWidget {
   /// -------------
   ///
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -301,11 +300,19 @@ class _MainPageState extends State<MainPage> {
   /// 
   List<TodoItem> items;
 
+  /// The future list of lists from the database.
+  /// 
+  /// e.g., Future<List<TodoList>>
+  /// 
+  late Future<List<TodoList>> _lists;
+
   ///
   /// -------------
   /// END FIELDS
   /// -------------
   ///
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -317,6 +324,12 @@ class _MainPageState extends State<MainPage> {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
     return Scaffold(
+
+      /// 
+      /// -------------
+      /// DRAWER
+      /// -------------
+      /// 
       drawer: Drawer(
         child: ListView(
           // Remove any padding from the ListView.
@@ -366,19 +379,129 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
+      /// 
+      /// -------------
+      /// END DRAWER
+      /// -------------
+      /// 
+
+      /// 
+      /// -------------
+      /// APPBAR
+      /// -------------
+      /// 
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: GridView.count(
-          // Create a grid with 2 columns.
-          crossAxisCount: 2,
-          // Generate the items in the grid from the stored lists.
-          children: List.generate(lists.length, (index) {
-            return createListBox(index);
-          }),
-        ),
+      /// 
+      /// -------------
+      /// END APPBAR
+      /// -------------
+      /// 
+
+      /// 
+      /// -------------
+      /// BODY
+      /// -------------
+      /// 
+      body: FutureBuilder<List<TodoList>>(
+        future: _lists,
+        builder: (BuildContext context, AsyncSnapshot<List<TodoList>> snapshot) {
+
+          // If the async event has completed.
+          if(snapshot.connectionState == ConnectionState.done) {
+
+            // Future async event has finsihed retrieving data.
+            if (snapshot.hasData) {
+              return Center(
+                child: GridView.count(
+                  // Create a grid with 2 columns.
+                  crossAxisCount: 2,
+                  // Generate the items in the grid from the stored lists.
+                  children: List.generate(snapshot.data!.length, (index) {
+                    return createListBox(snapshot.data, index);
+                  }),
+                ),
+              );
+            } 
+            
+            // Event results in error.
+            else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    ),
+                  ],
+                ),
+              );
+            } 
+            
+            // Has not completed or resulted in error.
+            else {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const <Widget>[
+                    SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Fetching lists...'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          } 
+          
+          // Async event is not executing.
+          else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const <Widget>[
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Fetching lists...'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
+      /// 
+      /// -------------
+      /// END BODY
+      /// -------------
+      /// 
+
+      /// 
+      /// -------------
+      /// FAB
+      /// -------------
+      /// 
+      
       /// Button to create a new list.
       /// 
       floatingActionButton: FloatingActionButton(
@@ -386,14 +509,25 @@ class _MainPageState extends State<MainPage> {
         tooltip: 'Create new list',
         child: Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1?.color),
       ),
+
+      /// 
+      /// -------------
+      /// END FAB
+      /// -------------
+      /// 
+
     );
   }
 
-  Future loadData() async {
-    Future<Database> database = DatabaseManager().open();
+  /// 
+  /// -------------
+  /// METHODS
+  /// -------------
+  /// 
 
-    lists = await DatabaseManager().lists(database);
-    items = await DatabaseManager().items(database);
+  void initState() {
+    super.initState();
+    reloadLists();
   }
 
   /// Navigates to the CreateListForm route.
@@ -403,7 +537,7 @@ class _MainPageState extends State<MainPage> {
       context,
       MaterialPageRoute(builder: (context) => CreateListForm()),
     ).then((_) => setState(() {
-        loadData();
+      reloadLists();
     }));
   }
 
@@ -413,14 +547,26 @@ class _MainPageState extends State<MainPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ViewList(list: selectedList)),
-    ).then((_) => setState(() {
-        loadData();
-    }));
+    );
+  }
+
+  /// Fetches the lists from the database.
+  /// 
+  void reloadLists() {
+    _lists = Future<List<TodoList>>.delayed(
+      // Pause this to make the loading circle appear.
+      Duration.zero,
+      () {
+        Future<Database> database = DatabaseManager().open();
+
+        return DatabaseManager().lists(database);
+      },
+    );
   }
 
   /// Constructs the grid box to display a list.
   /// 
-  Widget createListBox(index) {
+  Widget createListBox(lists_snapshot, index) {
     return Padding( 
       /// Add padding around each grid box.
       /// 
@@ -429,7 +575,7 @@ class _MainPageState extends State<MainPage> {
       /// 
       child: Ink(
         decoration: BoxDecoration(
-          color: HexColor.fromHex(lists[index].listColor),
+          color: HexColor.fromHex(lists_snapshot[index].listColor),
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         /// Handle the onTap with InkWell.
@@ -440,13 +586,13 @@ class _MainPageState extends State<MainPage> {
               borderRadius: BorderRadius.circular(20),
           ),
           onTap: () {
-            var subset = items.where((item) => item.listId == lists[index].id);
+            // var subset = items.where((item) => item.listId == lists_snapshot[index].id);
 
             // print("Items");
             // print(items);
             // print(subset.length);
 
-            viewList(lists[index]);
+            viewList(lists_snapshot[index]);
           },
           /// Display list name, color, etc., in a Container.
           /// 
@@ -454,7 +600,7 @@ class _MainPageState extends State<MainPage> {
             height: 80,
             width: 10,
             child: Center(child: Text(
-              lists[index].listName,
+              lists_snapshot[index].listName,
               /// For now hardcode the textstyle.
               /// 
               style: TextStyle(
@@ -469,6 +615,12 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  /// 
+  /// -------------
+  /// END METHODS
+  /// -------------
+  /// 
 
 }
 /// 
