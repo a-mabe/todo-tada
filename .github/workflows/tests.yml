@@ -12,8 +12,10 @@
 name: Flutter_Tests
 
 on:
-  pull_request:
-    branches: [master]
+  push:
+    branches:
+      - main
+      - load-spinner-main
 
 jobs:
   tests:
