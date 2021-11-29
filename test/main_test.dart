@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:todotada/listdata/todoitem.dart';
 import 'package:todotada/listdata/todolist.dart';
 import 'package:uuid/uuid.dart';
 
@@ -35,8 +34,7 @@ final Color textColor = Colors.black;
 ///
 
 Widget createRoot(
-    List<TodoList> lists,
-    List<TodoItem> items,
+    lists,
   ) => ChangeNotifierProvider<ThemeNotifier>(
         create: (_) => ThemeNotifier(ThemeData(
             colorScheme: ColorScheme(
@@ -104,7 +102,6 @@ Widget createRoot(
           textColor,
           Brightness.light,
           lists,
-          items,
         ),
       );
 
@@ -113,13 +110,14 @@ void main() {
     testWidgets('Testing Root Page Load and Empty Lists', (tester) async {
 
       List<TodoList> lists = [];
-      List<TodoItem> items = [];
 
       // Create root page.
       await tester.pumpWidget(createRoot(
         lists,
-        items,
       ));
+
+      // Push past the loading spinner.
+      await tester.pump(Duration(seconds: 1));
 
       // Find the title.
       expect(find.text('All Lists'), findsOneWidget);
@@ -134,20 +132,21 @@ void main() {
     testWidgets('Testing Menu Drawer Opening on Root Page and Empty Lists', (tester) async {
 
       List<TodoList> lists = [];
-      List<TodoItem> items = [];
 
       // Create root page.
       await tester.pumpWidget(createRoot(
         lists,
-        items,
       ));
+
+      // Push past the loading spinner.
+      await tester.pump(Duration(seconds: 1));
 
       // Open the drawer.
       final ScaffoldState state = tester.firstState(find.byType(Scaffold));
       state.openDrawer();
 
-      // Wait for the drawer to open.
-      await tester.pumpAndSettle();
+      // Wait for the drawer.
+      await tester.pump(Duration(seconds: 1));
 
       // Check that the drawer is open.
       expect(find.text('To-do, Tada'), findsOneWidget);
@@ -164,14 +163,13 @@ void main() {
         id: Uuid().v1(),
       );
 
-      List<TodoList> lists = [list_one];
-      List<TodoItem> items = [];
-
       // Create root page.
       await tester.pumpWidget(createRoot(
-        lists,
-        items,
+        [list_one],
       ));
+
+      // Push past the loading spinner.
+      await tester.pump(Duration(seconds: 1));
 
       // Title of the list should be shown in the grid.
       expect(find.text('Test List 1'), findsOneWidget);
@@ -210,13 +208,14 @@ void main() {
       );
 
       List<TodoList> lists = [list_one, list_two, list_three];
-      List<TodoItem> items = [];
 
       // Create root page.
       await tester.pumpWidget(createRoot(
         lists,
-        items,
       ));
+
+      // Push past the loading spinner.
+      await tester.pump(Duration(seconds: 1));
 
       // Title of each list should be displayed in the grid.
       expect(find.text('Test List 1'), findsOneWidget);
@@ -239,13 +238,14 @@ void main() {
       );
 
       List<TodoList> lists = [list_one];
-      List<TodoItem> items = [];
 
       // Create root page.
       await tester.pumpWidget(createRoot(
         lists,
-        items,
       ));
+
+      // Push past the loading spinner.
+      await tester.pump(Duration(seconds: 1));
 
       // Title of the list should be shown in the grid.
       expect(find.text('Test List 1'), findsOneWidget);

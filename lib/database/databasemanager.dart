@@ -216,28 +216,33 @@ class DatabaseManager {
     );
   }
 
-  Future<List<TodoList>> lists(Future<Database> database) async {
+  Future<List<TodoList>> lists(Future<Database> database, List<TodoList>? lists) async {
+
+    if (lists != null) 
+      return lists;
+    else {
+
+      /// Get a reference to the database.
+      /// 
+      final db = await database;
+
+      /// Query the table for all the TodoLists.
+      /// 
+      final List<Map<String, dynamic>> maps = await db.query(listTableName);
+
+      return List.generate(maps.length, (i) {
+        return TodoList(
+          listName: maps[i]['listName'], 
+          listColor: maps[i]['listColor'], 
+          listType: maps[i]['listType'], 
+          creationDate: maps[i]['creationDate'], 
+          lastUpdated: maps[i]['lastUpdated'], 
+          id: maps[i]['id'],
+          );
+        });
+
+    }
     
-    /// Get a reference to the database.
-    /// 
-    final db = await database;
-
-    /// Query the table for all the TodoLists.
-    /// 
-    final List<Map<String, dynamic>> maps = await db.query(listTableName);
-
-    /// Convert the List<Map<String, dynamic> into a List<TodoList>.
-    /// 
-    return List.generate(maps.length, (i) {
-      return TodoList(
-        listName: maps[i]['listName'],
-        listColor: maps[i]['listColor'],
-        listType: maps[i]['listType'],
-        creationDate: maps[i]['creationDate'],
-        lastUpdated: maps[i]['lastUpdated'],
-        id: maps[i]['id'],
-      );
-    });
   }
 
   Future<List<TodoItem>> items(Future<Database> database) async {

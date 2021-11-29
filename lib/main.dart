@@ -35,11 +35,6 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  Future<Database> database = DatabaseManager().open();
-
-  List<TodoList> lists = await DatabaseManager().lists(database);
-  List<TodoItem> items = await DatabaseManager().items(database);
-
   /// Run app once settings are initialized.
   /// 
   initSettings().then((_) {
@@ -129,8 +124,6 @@ void main() async {
           primaryColor,
           textColor,
           brightness,
-          lists,
-          items,
         ),
       ),
     );
@@ -153,11 +146,10 @@ Future<void> initSettings() async {
 class Root extends StatelessWidget {
 
   Root(
-    this.primaryColor, 
-    this.textColor,
-    this.brightness,
-    this.lists,
-    this.items,
+      this.primaryColor, // non-nullable and required
+      this.textColor, // non-nullable and required
+      this.brightness, // non-nullable and required
+      [this.lists, this.items,] // nullable and optional
   );
 
   ///
@@ -188,13 +180,13 @@ class Root extends StatelessWidget {
   /// 
   /// e.g., List<TodoLists>
   /// 
-  final List<TodoList> lists;
+  final List<TodoList>? lists;
 
   /// The List of TodoItems in the database.
   /// 
   /// e.g., List<TodoItems>
   /// 
-  final List<TodoItem> items;
+  final List<TodoItem>? items;
 
   ///
   /// -------------
@@ -236,8 +228,8 @@ class MainPage extends StatefulWidget {
   MainPage({
     Key? key, 
     required this.title,
-    required this.lists,
-    required this.items,
+    this.lists,
+    this.items,
   }) : super(key: key);
 
 
@@ -257,13 +249,13 @@ class MainPage extends StatefulWidget {
   /// 
   /// e.g., List<TodoLists>
   /// 
-  final List<TodoList> lists;
+  final List<TodoList>? lists;
 
   /// The List of TodoItems in the database.
   /// 
   /// e.g., List<TodoItems>
   /// 
-  final List<TodoItem> items;
+  final List<TodoItem>? items;
 
   ///
   /// -------------
@@ -292,13 +284,13 @@ class _MainPageState extends State<MainPage> {
   /// 
   /// e.g., List<TodoLists>
   /// 
-  List<TodoList> lists;
+  List<TodoList>? lists;
 
   /// The List of TodoItems in the database.
   /// 
   /// e.g., List<TodoItems>
   /// 
-  List<TodoItem> items;
+  List<TodoItem>? items;
 
   /// The future list of lists from the database.
   /// 
@@ -559,7 +551,7 @@ class _MainPageState extends State<MainPage> {
       () {
         Future<Database> database = DatabaseManager().open();
 
-        return DatabaseManager().lists(database);
+        return DatabaseManager().lists(database, lists);
       },
     );
   }
