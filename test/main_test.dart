@@ -257,7 +257,10 @@ void main() {
       await tester.tap(find.byType(InkWell).first);
 
       // Wait for the View List route to load.
-      await tester.pumpAndSettle();
+      await tester.pump(Duration(seconds: 1));
+
+      // Push past the loading spinner.
+      await tester.pump(Duration(seconds: 1));
 
       // Should be moved off of the Root Page.
       expect(find.text('All Lists'), findsNothing);
