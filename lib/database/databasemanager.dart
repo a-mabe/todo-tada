@@ -104,8 +104,8 @@ class DatabaseManager {
         );
         db.execute(
           '''
-          CREATE TABLE items(listId TEXT PRIMARY KEY,
-          id TEXT,
+          CREATE TABLE items(id TEXT PRIMARY KEY,
+          listId TEXT,
           title TEXT,
           description TEXT,
           icon TEXT,
@@ -190,6 +190,8 @@ class DatabaseManager {
     );
   }
 
+  /// Deletes the row with the given ID from the lists table.
+  /// 
   Future<void> deleteList(int id, Future<Database> database) async {
     
     /// Get a reference to the database.
@@ -203,6 +205,8 @@ class DatabaseManager {
     );
   }
 
+  /// Deletes the row with the given ID from the items table.
+  /// 
   Future<void> deleteItem(int id, Future<Database> database) async {
     
     /// Get a reference to the database.
@@ -216,6 +220,8 @@ class DatabaseManager {
     );
   }
 
+  /// Gets all rows from the lists table.
+  /// 
   Future<List<TodoList>> lists(Future<Database> database, List<TodoList>? lists) async {
 
     if (lists != null) 
@@ -245,6 +251,8 @@ class DatabaseManager {
     
   }
 
+  /// Gets all rows from the items table.
+  /// 
   Future<List<TodoItem>> items(Future<Database> database) async {
     
     /// Get a reference to the database.
@@ -254,6 +262,32 @@ class DatabaseManager {
     /// Query the table for all the TodoItems.
     /// 
     final List<Map<String, dynamic>> maps = await db.query(itemTableName);
+
+    /// Convert the List<Map<String, dynamic> into a List<TodoItem>.
+    /// 
+    return List.generate(maps.length, (i) {
+      return TodoItem(
+        title: maps[i]['title'],
+        description: maps[i]['description'],
+        icon: maps[i]['icon'],
+        status: maps[i]['status'],
+        id: maps[i]['id'],
+        listId: maps[i]['listId'],
+      );
+    });
+  }
+
+  /// Gets all the items corresponding to the given list ID.
+  /// 
+  Future<List<TodoItem>> getItemsByList(Future<Database> database, String listId) async {
+
+    /// Get a reference to the database.
+    /// 
+    final db = await database;
+
+    /// Query the table for all the TodoItems in the given list.
+    /// 
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * FROM items WHERE listId=?', [listId]);
 
     /// Convert the List<Map<String, dynamic> into a List<TodoItem>.
     /// 

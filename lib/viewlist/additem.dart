@@ -76,12 +76,11 @@ class AddItemState extends State<AddItem> {
               borderRadius: BorderRadius.circular(20),
           ),
           onTap: () {
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => EditItem(icon: images[index], list: widget.list),
                 ),
-                ModalRoute.withName('/'),
               );
           },
           /// Display list name, color, etc., in a Container.

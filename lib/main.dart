@@ -21,7 +21,7 @@ import 'themenotifier/themenotifier.dart';
 import 'createlist/createlist.dart';
 import 'database/databasemanager.dart';
 import 'listdata/todolist.dart';
-import 'listdata/todoitem.dart';
+import 'utility/loadingmessages.dart';
 import 'themenotifier/hexcolor.dart';
 
 
@@ -423,84 +423,20 @@ class _MainPageState extends State<MainPage> {
 
           // If the async event has completed.
           if(snapshot.connectionState == ConnectionState.done) {
-
             // Future async event has finsihed retrieving data.
             if (snapshot.hasData) {
-              return Center(
-                child: GridView.count(
-                  // Create a grid with 2 columns.
-                  crossAxisCount: 2,
-                  // Generate the boxes in the grid from the stored lists.
-                  children: List.generate(snapshot.data!.length, (index) {
-                    return createListBox(snapshot.data, index);
-                  }),
-                ),
-              );
+              return displayGrid(snapshot);
             } 
-            
             // Event results in error.
-            else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
-                    ),
-                  ],
-                ),
-              );
-            } 
-            
+            else if (snapshot.hasError)
+              return loadingError(snapshot);
             // Has not completed or resulted in error.
-            else {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const <Widget>[
-                    SizedBox(
-                      child: CircularProgressIndicator(),
-                      width: 60,
-                      height: 60,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Fetching lists...'),
-                    ),
-                  ],
-                ),
-              );
-            }
+            else
+              return loading();
           } 
-          
           // Async event is not executing.
-          else {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('Fetching lists...'),
-                  ),
-                ],
-              ),
-            );
-          }
+          else
+            return loading();
         },
       ),
       /// 
@@ -575,6 +511,19 @@ class _MainPageState extends State<MainPage> {
 
         return DatabaseManager().lists(database, lists);
       },
+    );
+  }
+
+  Widget displayGrid(snapshot) {
+    return Center(
+      child: GridView.count(
+        // Create a grid with 2 columns.
+        crossAxisCount: 2,
+        // Generate the boxes in the grid from the stored lists.
+        children: List.generate(snapshot.data!.length, (index) {
+          return createListBox(snapshot.data, index);
+        }),
+      ),
     );
   }
 
