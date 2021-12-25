@@ -8,21 +8,20 @@
 /// Route to add an item to the list.
 /// 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:todotada/utility/loadingmessages.dart';
 import 'package:todotada/viewlist/edititem.dart';
 import '../listdata/todolist.dart';
 
 class AddItem extends StatefulWidget {
 
-  /// The list of icons.
-  /// 
-  final List images;
-
   /// The list to view.
   /// 
   final TodoList list;
 
-  AddItem({Key? key, required this.images, required this.list}) : super(key: key);
+  AddItem({Key? key, required this.list}) : super(key: key);
 
   @override
   AddItemState createState() {
@@ -32,6 +31,19 @@ class AddItem extends StatefulWidget {
 
 class AddItemState extends State<AddItem> {
 
+  /// The future list of images from the icon folder.
+  /// 
+  /// e.g., Future<List>
+  /// 
+  late Future<List> _images;
+
+  /// Load from the database on initState.
+  /// 
+  void initState() {
+    super.initState();
+    fetchIconList();
+  }
+
   @override
   Widget build(BuildContext context) {
     /// Build a Form widget using the _formKey created above.
@@ -40,21 +52,67 @@ class AddItemState extends State<AddItem> {
       appBar: AppBar(
         title: Text("Add an Item"),
       ),
-      body: Center(
+      body: FutureBuilder<List>(
+        future: _images,
+        builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+
+          // If the async event has completed.
+          if(snapshot.connectionState == ConnectionState.done) {
+            // Future async event has finsihed retrieving data.
+            if (snapshot.hasData)
+              return displayIcons(snapshot);
+            // Event results in error.
+            else if (snapshot.hasError)
+              return loadingError(snapshot);
+            // Has not completed or resulted in error.
+            else
+              return loading();
+          } 
+          // Async event is not executing.
+          else
+            return loading();
+        },
+      ),
+    );
+  }
+
+  /// Adapted from https://stackoverflow.com/a/66434157
+  /// 
+  void fetchIconList() async {
+    _images = Future<List<String>>.delayed(
+      Duration.zero,
+      () async {
+        // Load as String.
+        final manifestContent = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+
+        // Decode to Map.
+        final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+
+        // Filter by path.
+        final filtered = manifestMap.keys
+            .where((path) => path.startsWith('assets/icons/'))
+            .toList();
+        
+        return filtered;
+      },
+    );
+  }
+
+  Widget displayIcons(snapshot) {
+    return Center(
         child: GridView.count(
           /// Create a grid with 2 columns.
           /// 
           crossAxisCount: 4,
           /// Generate the items in the grid from the stored lists.
           /// 
-          children: List.generate(widget.images.length, (index) {
+          children: List.generate(snapshot.data!.length, (index) {
             return Center(
-              child: createListBox(index, widget.images),
+              child: createListBox(index, snapshot.data!),
             );
           }),
         ),
-      ),
-    );
+      );
   }
 
   /// Constructs the grid box to display a list.

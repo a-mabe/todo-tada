@@ -8,8 +8,6 @@
 /// Route that shows the selected to-do list.
 /// 
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todotada/database/databasemanager.dart';
@@ -51,7 +49,6 @@ class ViewListState extends State<ViewList> {
   late Future<List<TodoItem>> _items;
 
   ViewListState({required this.list});
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,12 +109,12 @@ class ViewListState extends State<ViewList> {
             return loading();
         },
       ),
-      /// 
-      /// -------------
-      /// END BODY
-      /// -------------
-      /// 
     );
+    /// 
+    /// -------------
+    /// END BODY
+    /// -------------
+    /// 
   }
 
   /// Load from the database on initState.
@@ -154,33 +151,15 @@ class ViewListState extends State<ViewList> {
     );
   }
 
-  /// Adapted from https://stackoverflow.com/a/66434157
-  /// 
-  Future<List> fetchIconList() async {
-    // Load as String.
-    final manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-
-    // Decode to Map.
-    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-
-    // Filter by path.
-    final filtered = manifestMap.keys
-        .where((path) => path.startsWith('assets/icons/'))
-        .toList();
-    
-    return filtered;
-  }
-
   /// Navigates to the AddItem route.
   /// 
-  void addItem() async {
+  void addItem() {
 
-    List images = await fetchIconList();
+    // List images = await fetchIconList();
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddItem(images: images, list: widget.list)),
+      MaterialPageRoute(builder: (context) => AddItem(list: widget.list)),
     );
   }
 
