@@ -190,19 +190,24 @@ class EditItemState extends State<EditItem> {
 
                   /// Insert the list into the database.
                   /// 
-                  await DatabaseManager().insertItem(newItem, database);
+                  /// Only navigate to the next screen once this is done.
+                  /// 
+                  await DatabaseManager().insertItem(newItem, database)
+                  .then((value) {
 
-                  /// Navigate to the ViewList route for the created list and clear
-                  /// the CreateList route from the stack so that the user goes 
-                  /// back to the home page, not the CreateList page.
-                  ///
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ViewList(list: widget.list),
-                    ),
-                    ModalRoute.withName('/'),
-                  );
+                    /// Navigate to the ViewList route for the created list and clear
+                    /// the CreateList route from the stack so that the user goes 
+                    /// back to the home page, not the CreateList page.
+                    ///
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ViewList(list: widget.list),
+                      ),
+                      ModalRoute.withName('/'),
+                    );
+
+                  });
 
                 }
               },
