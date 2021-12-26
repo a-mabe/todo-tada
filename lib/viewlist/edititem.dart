@@ -172,10 +172,6 @@ class EditItemState extends State<EditItem> {
                   /// If the form is valid, display a snackbar. In the real world,
                   /// you'd often call a server or save the information in a database.
                   /// 
-                  
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Adding item...')),
-                  );
 
                   /// Open the database.
                   /// 
@@ -194,19 +190,24 @@ class EditItemState extends State<EditItem> {
 
                   /// Insert the list into the database.
                   /// 
-                  await DatabaseManager().insertItem(newItem, database);
+                  /// Only navigate to the next screen once this is done.
+                  /// 
+                  await DatabaseManager().insertItem(newItem, database)
+                  .then((value) {
 
-                  /// Navigate to the ViewList route for the created list and clear
-                  /// the CreateList route from the stack so that the user goes 
-                  /// back to the home page, not the CreateList page.
-                  ///
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ViewList(list: widget.list),
-                    ),
-                    ModalRoute.withName('/'),
-                  );
+                    /// Navigate to the ViewList route for the created list and clear
+                    /// the CreateList route from the stack so that the user goes 
+                    /// back to the home page, not the CreateList page.
+                    ///
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ViewList(list: widget.list),
+                      ),
+                      ModalRoute.withName('/'),
+                    );
+
+                  });
 
                 }
               },

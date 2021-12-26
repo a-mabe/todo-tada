@@ -21,7 +21,7 @@ import 'themenotifier/themenotifier.dart';
 import 'createlist/createlist.dart';
 import 'database/databasemanager.dart';
 import 'listdata/todolist.dart';
-import 'listdata/todoitem.dart';
+import 'utility/loadingmessages.dart';
 import 'themenotifier/hexcolor.dart';
 
 
@@ -33,6 +33,11 @@ import 'themenotifier/hexcolor.dart';
 ///
 void main() async {
 
+  /// This line is recommended by https://docs.flutter.dev/cookbook/persistence/sqlite
+  ///
+  /// Avoid errors caused by flutter upgrade.
+  /// Importing 'package:flutter/widgets.dart' is required.
+  /// 
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Run app once settings are initialized.
@@ -120,6 +125,8 @@ void main() async {
             ),
           ),
         ),
+        /// Set the Root
+        /// 
         child: Root(
           primaryColor,
           textColor,
@@ -145,12 +152,24 @@ Future<void> initSettings() async {
 /// 
 class Root extends StatelessWidget {
 
+  ///
+  /// ---------
+  /// CONSTRUCTOR(S)
+  /// ---------
+  ///
+
   Root(
       this.primaryColor, // non-nullable and required
       this.textColor, // non-nullable and required
       this.brightness, // non-nullable and required
-      [this.lists, this.items,] // nullable and optional
+      [this.lists, ] // nullable and optional
   );
+
+  ///
+  /// ---------
+  /// END CONSTRUCTOR(S)
+  /// ---------
+  ///
 
   ///
   /// ---------
@@ -178,15 +197,11 @@ class Root extends StatelessWidget {
 
   /// The List of TodoLists in the database.
   /// 
+  /// OPTIONAL. Mostly used for testing.
+  /// 
   /// e.g., List<TodoLists>
   /// 
   final List<TodoList>? lists;
-
-  /// The List of TodoItems in the database.
-  /// 
-  /// e.g., List<TodoItems>
-  /// 
-  final List<TodoItem>? items;
 
   ///
   /// -------------
@@ -194,7 +209,14 @@ class Root extends StatelessWidget {
   /// -------------
   ///
 
-  // This widget is the root of your application.
+  /// The actual root UI widget.
+  /// 
+  /// Includes:
+  /// - Appbar
+  /// - Menu drawer
+  /// - Grid of all lists in the database
+  /// - FAB to add a list
+  /// 
   @override
   Widget build(BuildContext context) {
 
@@ -205,8 +227,7 @@ class Root extends StatelessWidget {
       theme: themeNotifier.getTheme(),
       home: MainPage(
         title: 'All Lists',
-        lists: lists,
-        items: items,
+        lists: lists, // Optional, could be null.
       ),
     );
   }
@@ -225,12 +246,23 @@ class Root extends StatelessWidget {
 /// 
 class MainPage extends StatefulWidget {
 
+  ///
+  /// ---------
+  /// CONSTRUCTOR(S)
+  /// ---------
+  ///
+
   MainPage({
     Key? key, 
     required this.title,
-    this.lists,
-    this.items,
+    this.lists, // Optional, could be null.
   }) : super(key: key);
+
+  ///
+  /// ---------
+  /// END CONSTRUCTOR(S)
+  /// ---------
+  ///
 
 
   ///
@@ -247,15 +279,11 @@ class MainPage extends StatefulWidget {
 
   /// The List of TodoLists in the database.
   /// 
+  /// OPTIONAL. Mostly used for testing.
+  /// 
   /// e.g., List<TodoLists>
   /// 
   final List<TodoList>? lists;
-
-  /// The List of TodoItems in the database.
-  /// 
-  /// e.g., List<TodoItems>
-  /// 
-  final List<TodoItem>? items;
 
   ///
   /// -------------
@@ -266,13 +294,12 @@ class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState(
     lists,
-    items,
   );
 }
 
 class _MainPageState extends State<MainPage> {
 
-  _MainPageState(this.lists, this.items);
+  _MainPageState(this.lists);
 
   ///
   /// ---------
@@ -282,15 +309,11 @@ class _MainPageState extends State<MainPage> {
 
   /// The List of TodoLists in the database.
   /// 
+  /// OPTIONAL. Mostly used for testing.
+  /// 
   /// e.g., List<TodoLists>
   /// 
   List<TodoList>? lists;
-
-  /// The List of TodoItems in the database.
-  /// 
-  /// e.g., List<TodoItems>
-  /// 
-  List<TodoItem>? items;
 
   /// The future list of lists from the database.
   /// 
@@ -303,8 +326,6 @@ class _MainPageState extends State<MainPage> {
   /// END FIELDS
   /// -------------
   ///
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -402,84 +423,20 @@ class _MainPageState extends State<MainPage> {
 
           // If the async event has completed.
           if(snapshot.connectionState == ConnectionState.done) {
-
             // Future async event has finsihed retrieving data.
             if (snapshot.hasData) {
-              return Center(
-                child: GridView.count(
-                  // Create a grid with 2 columns.
-                  crossAxisCount: 2,
-                  // Generate the items in the grid from the stored lists.
-                  children: List.generate(snapshot.data!.length, (index) {
-                    return createListBox(snapshot.data, index);
-                  }),
-                ),
-              );
+              return displayGrid(snapshot);
             } 
-            
             // Event results in error.
-            else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
-                    ),
-                  ],
-                ),
-              );
-            } 
-            
+            else if (snapshot.hasError)
+              return loadingError(snapshot);
             // Has not completed or resulted in error.
-            else {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const <Widget>[
-                    SizedBox(
-                      child: CircularProgressIndicator(),
-                      width: 60,
-                      height: 60,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Fetching lists...'),
-                    ),
-                  ],
-                ),
-              );
-            }
+            else
+              return loading();
           } 
-          
           // Async event is not executing.
-          else {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('Fetching lists...'),
-                  ),
-                ],
-              ),
-            );
-          }
+          else
+            return loading();
         },
       ),
       /// 
@@ -517,6 +474,8 @@ class _MainPageState extends State<MainPage> {
   /// -------------
   /// 
 
+  /// Load from the database on initState.
+  /// 
   void initState() {
     super.initState();
     reloadLists();
@@ -546,13 +505,25 @@ class _MainPageState extends State<MainPage> {
   /// 
   void reloadLists() {
     _lists = Future<List<TodoList>>.delayed(
-      // Pause this to make the loading circle appear.
       Duration.zero,
       () {
         Future<Database> database = DatabaseManager().open();
 
         return DatabaseManager().lists(database, lists);
       },
+    );
+  }
+
+  Widget displayGrid(snapshot) {
+    return Center(
+      child: GridView.count(
+        // Create a grid with 2 columns.
+        crossAxisCount: 2,
+        // Generate the boxes in the grid from the stored lists.
+        children: List.generate(snapshot.data!.length, (index) {
+          return createListBox(snapshot.data, index);
+        }),
+      ),
     );
   }
 
@@ -578,12 +549,6 @@ class _MainPageState extends State<MainPage> {
               borderRadius: BorderRadius.circular(20),
           ),
           onTap: () {
-            // var subset = items.where((item) => item.listId == lists_snapshot[index].id);
-
-            // print("Items");
-            // print(items);
-            // print(subset.length);
-
             viewList(lists_snapshot[index]);
           },
           /// Display list name, color, etc., in a Container.
