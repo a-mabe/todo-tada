@@ -52,6 +52,18 @@ class TodoItem {
   /// 
   final String listId;
 
+  /// X position of the icon on the screen.
+  /// 
+  /// e.g., 100.0
+  /// 
+  double dx;
+
+  /// Y position of the icon on the screen.
+  /// 
+  /// e.g., 100.0
+  /// 
+  double dy;
+
   ///
   /// -------------
   /// END FIELDS
@@ -84,6 +96,8 @@ class TodoItem {
     required this.status,
     required this.id,
     required this.listId,
+    required this.dx,
+    required this.dy,
   });
 
   /// 
@@ -106,6 +120,8 @@ class TodoItem {
       'status': status,
       'id': id,
       'listId': listId,
+      'dx': dx,
+      'dy': dy,
     };
   }
 
@@ -114,7 +130,7 @@ class TodoItem {
   /// 
   @override
   String toString() {
-    return 'TodoItem{id: $id, listId: $listId, title: $title, description: $description, icon: $icon, status: $status}';
+    return 'TodoItem{id: $id, listId: $listId, title: $title, description: $description, icon: $icon, status: $status, dx: $dx, dy: $dy}';
   }
 
   /// 

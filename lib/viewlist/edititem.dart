@@ -186,6 +186,8 @@ class EditItemState extends State<EditItem> {
                     status: 0,
                     id: Uuid().v1(),
                     listId: widget.list.id,
+                    dx: 100,
+                    dy: 100,
                   );
 
                   /// Insert the list into the database.

@@ -48,8 +48,6 @@ class ViewListState extends State<ViewList> {
   /// 
   late Future<List<TodoItem>> _items;
 
-  Offset position = Offset(100, 200);
-
   ViewListState({required this.list});
 
   @override
@@ -99,118 +97,139 @@ class ViewListState extends State<ViewList> {
             // Future async event has finsihed retrieving data.
             if (snapshot.hasData)
               return Stack(
-          children: [
-            Row(
-              children: [
-                  Flexible(
-                  child: FractionallySizedBox(
-                    heightFactor: 1, widthFactor: 1,
-                    child: DragTarget<String>(
-                      builder: (
-                        BuildContext context,
-                        List<dynamic> accepted,
-                        List<dynamic> rejected,
-                      ) {
-                        return Container(color: Colors.orange);
-                      },
-                      onAccept: (data) {
-                        debugPrint('hi $data');
-                        setState(() {
-                          print('Dropped in orange!');
-                        });
-                      },
-                      onWillAccept: (data) {
-                        return true;
-                      },
-                      onLeave: (data) {
-                        print('Missed');
-                      },
-                    ),
-                  ),
-                ),
-                
-                Flexible(
-                  child: FractionallySizedBox(
-                    heightFactor: 1, widthFactor: 1,
-                    child: DragTarget<String>(
-                      builder: (
-                        BuildContext context,
-                        List<dynamic> accepted,
-                        List<dynamic> rejected,
-                      ) {
-                        return Container(color: Colors.green);
-                      },
-                      onAccept: (data) {
-                        debugPrint('hi $data');
-                        setState(() {
-                          print('Dropped in green!');
-                        });
-                      },
-                      onWillAccept: (data) {
-                        return true;
-                      },
-                      onLeave: (data) {
-                        print('Missed');
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Stack(
-              children: List.generate(snapshot.data!.length, (index) {
-                // return Text(snapshot.data![index].title);
-                return Positioned(
-                  left: position.dx,
-                  top: position.dy,
-                  child: Draggable<String>(
-                    // Data is the value this Draggable stores.
-                    data: snapshot.data![index].icon,
-                    onDragEnd: (details) => setState(() {
-                      print(details.offset);
-                      position = details.offset;
-                      print(position);
-                      print(position.dx);
-                      print(position.dy);
-                    }),
-                    child: Container(
-                      height: 50.0,
-                      width: 50.0,
-                      child: Image.asset(
-                          snapshot.data![index].icon,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: FractionallySizedBox(
+                          heightFactor: 1, widthFactor: 1,
+                          child: DragTarget<String>(
+                            builder: (
+                              BuildContext context,
+                              List<dynamic> accepted,
+                              List<dynamic> rejected,
+                            ) {
+                              return Container(color: Colors.orange);
+                            },
+                            onAccept: (data) {
+                              debugPrint('hi $data');
+                              setState(() {
+                                print('Dropped in orange!');
+                              });
+                            },
+                            onWillAccept: (data) {
+                              return true;
+                            },
+                            onLeave: (data) {
+                              print('Missed');
+                            },
+                          ),
                         ),
                       ),
-                    feedback: Container(
-                        height: 70.0,
-                        width: 70.0,
-                        child: Image.asset(
-                          snapshot.data![index].icon,
+                      
+                      Flexible(
+                        child: FractionallySizedBox(
+                          heightFactor: 1, widthFactor: 1,
+                          child: DragTarget<String>(
+                            builder: (
+                              BuildContext context,
+                              List<dynamic> accepted,
+                              List<dynamic> rejected,
+                            ) {
+                              return Container(color: Colors.green);
+                            },
+                            onAccept: (data) {
+                              debugPrint('hi $data');
+                              setState(() {
+                                print('Dropped in green!');
+                              });
+                            },
+                            onWillAccept: (data) {
+                              return true;
+                            },
+                            onLeave: (data) {
+                              print('Missed');
+                            },
+                          ),
                         ),
                       ),
-                    childWhenDragging: ColorFiltered(
-                    /// Color matrix from https://medium.com/@samarth_agarwal/turn-images-to-grayscale-in-flutter-the-colorfiltered-widget-16de44cf8045
-                    /// 
-                    colorFilter: ColorFilter.matrix(<double>[
-                      0.2126,0.7152,0.0722,0,0,
-                      0.2126,0.7152,0.0722,0,0,
-                      0.2126,0.7152,0.0722,0,0,
-                      0,0,0,1,0,
-                    ]),
-                    child: Container(
-                    height: 50.0,
-                    width: 50.0,
-                    child: Image.asset(
-                      snapshot.data![index].icon,
-                      opacity: AlwaysStoppedAnimation<double>(0.4),
-                    ),
+                    ],
                   ),
-                ),
+                  Stack(
+                    children: List.generate(snapshot.data!.length, (index) {
+                      // return Text(snapshot.data![index].title);
+                      return Positioned(
+                        left: snapshot.data![index].dx,
+                        top: snapshot.data![index].dy,
+                        child: Draggable<String>(
+                          // Data is the value this Draggable stores.
+                          data: snapshot.data![index].icon,
+                          maxSimultaneousDrags: 1,
+                          onDragEnd: (details) => setState(() {
+
+                            var updatedItem = TodoItem(
+                              title: snapshot.data![index].title,
+                              description: "",
+                              icon: snapshot.data![index].icon,
+                              status: 0,
+                              id: snapshot.data![index].id,
+                              listId: snapshot.data![index].listId,
+                              dx: details.offset.dx + 5.0,
+                              dy: details.offset.dy - 60.0,
+                            );
+
+                            Future<Database> database = DatabaseManager().open();
+
+                            DatabaseManager().updateItems(updatedItem, database).then((_) {
+                              setState(() {
+                                snapshot.data![index].dx = details.offset.dx + 5.0;
+                                snapshot.data![index].dy = details.offset.dy - 60.0;
+                              });
+                            });
+
+                            print(details.offset);
+                          }),
+                          child: Container(
+                            height: 50.0,
+                            width: 50.0,
+                            child: Image.asset(
+                                snapshot.data![index].icon,
+                              ),
+                            ),
+                          feedback: Container(
+                              height: 70.0,
+                              width: 70.0,
+                              child: Image.asset(
+                                snapshot.data![index].icon,
+                              ),
+                            ),
+                          childWhenDragging: ColorFiltered(
+                          /// Color matrix from https://medium.com/@samarth_agarwal/turn-images-to-grayscale-in-flutter-the-colorfiltered-widget-16de44cf8045
+                          /// 
+                          /// Used to gray out the PNG image that is left behind when dragging the
+                          /// icon without having a gray box around the image.
+                          /// 
+                          colorFilter: ColorFilter.matrix(<double>[
+                            0.2126,0.7152,0.0722,0,0,
+                            0.2126,0.7152,0.0722,0,0,
+                            0.2126,0.7152,0.0722,0,0,
+                            0,0,0,1,0,
+                          ]),
+                          child: Container(
+                          height: 50.0,
+                          width: 50.0,
+                          child: Image.asset(
+                            snapshot.data![index].icon,
+                            opacity: AlwaysStoppedAnimation<double>(0.4),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
               ),
-            );
-          }),
-        ),
-      ],
-    );
+            ],
+          );
             // Event results in error.
             else if (snapshot.hasError)
               return loadingError(snapshot);
@@ -250,124 +269,6 @@ class ViewListState extends State<ViewList> {
       },
     );
     print(await _items);
-  }
-
-  // ignore: long-method
-  Widget displayList(snapshot, context, position) {
-
-    return Stack(
-          children: [
-            Row(
-              children: [
-                  Flexible(
-                  child: FractionallySizedBox(
-                    heightFactor: 1, widthFactor: 1,
-                    child: DragTarget<String>(
-                      builder: (
-                        BuildContext context,
-                        List<dynamic> accepted,
-                        List<dynamic> rejected,
-                      ) {
-                        return Container(color: Colors.orange);
-                      },
-                      onAccept: (data) {
-                        debugPrint('hi $data');
-                        setState(() {
-                          print('Dropped in orange!');
-                        });
-                      },
-                      onWillAccept: (data) {
-                        return true;
-                      },
-                      onLeave: (data) {
-                        print('Missed');
-                      },
-                    ),
-                  ),
-                ),
-                
-                Flexible(
-                  child: FractionallySizedBox(
-                    heightFactor: 1, widthFactor: 1,
-                    child: DragTarget<String>(
-                      builder: (
-                        BuildContext context,
-                        List<dynamic> accepted,
-                        List<dynamic> rejected,
-                      ) {
-                        return Container(color: Colors.green);
-                      },
-                      onAccept: (data) {
-                        debugPrint('hi $data');
-                        setState(() {
-                          print('Dropped in green!');
-                        });
-                      },
-                      onWillAccept: (data) {
-                        return true;
-                      },
-                      onLeave: (data) {
-                        print('Missed');
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Stack(
-              children: List.generate(snapshot.data!.length, (index) {
-                // return Text(snapshot.data![index].title);
-                return Positioned(
-                  left: position.dx,
-                  top: position.dy,
-                  child: Draggable<String>(
-                    // Data is the value this Draggable stores.
-                    data: snapshot.data![index].icon,
-                    onDragEnd: (details) => setState(() {
-                      print(details.offset);
-                      position = details.offset;
-                      print(position);
-                      print(position.dx);
-                      print(position.dy);
-                    }),
-                    child: Container(
-                      height: 50.0,
-                      width: 50.0,
-                      child: Image.asset(
-                          snapshot.data![index].icon,
-                        ),
-                      ),
-                    feedback: Container(
-                        height: 70.0,
-                        width: 70.0,
-                        child: Image.asset(
-                          snapshot.data![index].icon,
-                        ),
-                      ),
-                    childWhenDragging: ColorFiltered(
-                    /// Color matrix from https://medium.com/@samarth_agarwal/turn-images-to-grayscale-in-flutter-the-colorfiltered-widget-16de44cf8045
-                    /// 
-                    colorFilter: ColorFilter.matrix(<double>[
-                      0.2126,0.7152,0.0722,0,0,
-                      0.2126,0.7152,0.0722,0,0,
-                      0.2126,0.7152,0.0722,0,0,
-                      0,0,0,1,0,
-                    ]),
-                    child: Container(
-                    height: 50.0,
-                    width: 50.0,
-                    child: Image.asset(
-                      snapshot.data![index].icon,
-                      opacity: AlwaysStoppedAnimation<double>(0.4),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
-    );
   }
 
   /// Navigates to the AddItem route.

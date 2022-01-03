@@ -104,12 +104,14 @@ class DatabaseManager {
         );
         db.execute(
           '''
-          CREATE TABLE items(id TEXT PRIMARY KEY,
-          listId TEXT,
-          title TEXT,
+          CREATE TABLE items(title TEXT,
           description TEXT,
           icon TEXT,
-          status INTEGER
+          status INTEGER,
+          id TEXT PRIMARY KEY,
+          listId TEXT,
+          dx REAL,
+          dy REAL
           )
           ''',
         );
@@ -183,7 +185,7 @@ class DatabaseManager {
     final db = await database;
 
     await db.update(
-      listTableName,
+      itemTableName,
       todoItem.toMap(),
       where: 'id = ?',  // Ensure that the List has a matching id.
       whereArgs: [todoItem.id], // Pass the id as a whereArg to prevent SQL injection.
@@ -273,6 +275,8 @@ class DatabaseManager {
         status: maps[i]['status'],
         id: maps[i]['id'],
         listId: maps[i]['listId'],
+        dx: maps[i]['dx'],
+        dy: maps[i]['dy'],
       );
     });
   }
@@ -299,6 +303,8 @@ class DatabaseManager {
         status: maps[i]['status'],
         id: maps[i]['id'],
         listId: maps[i]['listId'],
+        dx: maps[i]['dx'],
+        dy: maps[i]['dy'],
       );
     });
   }
